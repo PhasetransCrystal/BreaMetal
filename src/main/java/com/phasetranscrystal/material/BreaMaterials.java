@@ -15,16 +15,14 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-import java.util.concurrent.CompletableFuture;
-
-@Mod(Material.MOD_ID)
-public class Material
+@Mod(BreaMaterials.MODID)
+public class BreaMaterials
 {
-    public static final String MOD_ID = "material";
+    public static final String MODID = "material";
     private static final Logger LOGGER = LogUtils.getLogger();
 
 
-    public Material(IEventBus modEventBus, ModContainer modContainer)
+    public BreaMaterials(IEventBus modEventBus, ModContainer modContainer)
     {
         modEventBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.register(this);
@@ -40,7 +38,7 @@ public class Material
         LOGGER.info("HELLO from server starting");
     }
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

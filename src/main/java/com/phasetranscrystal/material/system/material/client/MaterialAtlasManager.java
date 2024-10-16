@@ -68,8 +68,6 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
     }
 
 
-
-
     @Override
     public CompletableFuture<Void> reload(PreparationBarrier pPreparationBarrier, ResourceManager pResourceManager, ProfilerFiller pPreparationsProfiler, ProfilerFiller pReloadProfiler, Executor pBackgroundExecutor, Executor pGameExecutor) {
         SpriteLoader loader = SpriteLoader.create(this.textureAtlas);

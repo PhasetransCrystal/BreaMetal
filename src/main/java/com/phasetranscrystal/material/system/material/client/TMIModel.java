@@ -3,7 +3,7 @@ package com.phasetranscrystal.material.system.material.client;
 import com.landis.breakdowncore.BreakdownCore;
 import com.landis.breakdowncore.BreaRegistries;
 import com.landis.breakdowncore.helper.ModelHelper;
-import com.landis.breakdowncore.module.render.model.ItemORResolveOnly;
+import com.phasetranscrystal.material.module.render.model.ItemORResolveOnly;
 import com.phasetranscrystal.material.system.material.ITypedMaterialObj;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;

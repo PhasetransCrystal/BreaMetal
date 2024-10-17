@@ -18,7 +18,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(BreaMaterials.MODID)
 public class BreaMaterials
 {
-    public static final String MODID = "material";
+    public static final String MODID = "breamaterial";
     private static final Logger LOGGER = LogUtils.getLogger();
 
 

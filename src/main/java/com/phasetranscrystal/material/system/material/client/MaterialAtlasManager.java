@@ -1,8 +1,7 @@
 package com.phasetranscrystal.material.system.material.client;
 
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.BreaRegistries;
-import com.landis.breakdowncore.helper.SpriteHelper;
+import com.phasetranscrystal.material.BreaRegistries;
+import com.phasetranscrystal.material.helper.SpriteHelper;
 import com.phasetranscrystal.material.BreaMaterials;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;

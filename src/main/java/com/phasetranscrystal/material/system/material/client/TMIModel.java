@@ -1,8 +1,8 @@
 package com.phasetranscrystal.material.system.material.client;
 
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.BreaRegistries;
-import com.landis.breakdowncore.helper.ModelHelper;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.BreaRegistries;
+import com.phasetranscrystal.material.helper.ModelHelper;
 import com.phasetranscrystal.material.module.render.model.ItemORResolveOnly;
 import com.phasetranscrystal.material.system.material.ITypedMaterialObj;
 import com.phasetranscrystal.material.system.material.Material;
@@ -50,7 +50,7 @@ public class TMIModel implements BakedModel {
     private final Map<Material, BakedModel> modelCache = new HashMap<>();
     private final Map<Integer, BakedModel> idpCache = new HashMap<>();
     private BakedModel missingModel;
-    //    public final TextureAtlasSprite MISSING_SPRITE = Minecraft.getInstance().getTextureAtlas(new ResourceLocation(BreakdownCore.MODID,"material")).apply(new ResourceLocation(BreakdownCore.MODID,"material/missing"));
+    //    public final TextureAtlasSprite MISSING_SPRITE = Minecraft.getInstance().getTextureAtlas(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"material")).apply(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"material/missing"));
     private TextureAtlasSprite missingSprite;
     private boolean cached = false;
     private boolean inited = false;
@@ -88,27 +88,27 @@ public class TMIModel implements BakedModel {
 
     private void bootstrapCache() {
         if (!inited) {
-            this.missingSprite = Minecraft.getInstance().getTextureAtlas(BLOCK_ATLAS).apply(new ResourceLocation(BreakdownCore.MODID, "material/missing"));
+            this.missingSprite = Minecraft.getInstance().getTextureAtlas(BLOCK_ATLAS).apply(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "material/missing"));
 
-            ResourceLocation bakeName = new ResourceLocation(BreakdownCore.MODID, "material_item_bake/" + type.id.toString().replace(":", "_"));
+            ResourceLocation bakeName = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "material_item_bake/" + type.id.toString().replace(":", "_"));
 
             this.shapeModel = (BlockModel) bakery.getModel(System$Material.basicModel(this.type.id));
-//            this.shapeModel.customData.setRenderTypeHint(new ResourceLocation(BreakdownCore.MODID,"material"));
+//            this.shapeModel.customData.setRenderTypeHint(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"material"));
             shapeModel.parent = ModelBakery.GENERATION_MARKER;
             shapeModel.transforms = ModelHelper.copyDefaultItemTransforms();
-            this.missingModel = BreakdownCore.getItemModelgen().generateBlockModel(net.minecraft.client.resources.model.Material::sprite, shapeModel)
+            this.missingModel = BreaMaterials.getItemModelgen().generateBlockModel(net.minecraft.client.resources.model.Material::sprite, shapeModel)
                     .bake(bakery.new ModelBakerImpl((location, material) -> material.sprite(), bakeName), net.minecraft.client.resources.model.Material::sprite, new SimpleModelState(Transformation.identity()), bakeName);//好丑……
             inited = true;
         }
 
         if (!cached) {
             if (!modelCache.containsKey(materialType)) {
-                ResourceLocation bakeName = new ResourceLocation(BreakdownCore.MODID, "material_item_bake/" + type.id.toString().replace(":", "_"));
-//                BakedModel baked = BreakdownCore.getItemModelgen().generateBlockModel(m -> MaterialAtlasManager.getInstance().getSprite(materialType,type), shapeModel)
+                ResourceLocation bakeName = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "material_item_bake/" + type.id.toString().replace(":", "_"));
+//                BakedModel baked = BreaMaterials.getItemModelgen().generateBlockModel(m -> MaterialAtlasManager.getInstance().getSprite(materialType,type), shapeModel)
                 BakedModel baked;
                 if (!materialType.intermediateProduct || idpCache.containsKey(materialType.x16color)) {
                     TextureAtlasSprite sprite = ((TextureAtlas) Minecraft.getInstance().getTextureManager().getTexture(BLOCK_ATLAS)).getSprite(materialType.intermediateProduct ? System$Material.idpForAtlasID(materialType.x16color, type) : System$Material.combineForAtlasID(materialType, type));
-                    baked = BreakdownCore.getItemModelgen().generateBlockModel(m -> sprite, shapeModel).bake(bakery.new ModelBakerImpl((m, n) -> sprite, bakeName),
+                    baked = BreaMaterials.getItemModelgen().generateBlockModel(m -> sprite, shapeModel).bake(bakery.new ModelBakerImpl((m, n) -> sprite, bakeName),
                             shapeModel,
                             m -> sprite,
                             new SimpleModelState(Transformation.identity()),

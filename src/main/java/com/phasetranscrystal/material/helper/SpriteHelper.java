@@ -1,7 +1,7 @@
 package com.phasetranscrystal.material.helper;
 
-import com.landis.breakdowncore.BreakdownCore;
 import com.mojang.blaze3d.platform.NativeImage;
+import com.phasetranscrystal.material.BreaMaterials;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
@@ -15,9 +15,10 @@ import java.util.List;
 //我很怀疑写这东西的时候的人的精神状态
 public class SpriteHelper {
     public static NativeImage firstFrame(SpriteContents contents){
-        NativeImage image = new NativeImage(contents.width,contents.height,false);
+        NativeImage image = new NativeImage(contents.width(),contents.height(),false);
         boolean animate = contents.animatedTexture != null;
-        contents.originalImage.copyRect(image,animate ? contents.animatedTexture.getFrameX(0) : 0,animate ? contents.animatedTexture.getFrameY(0) : 0,0,0,contents.width,contents.height,false,false);
+        //TODO 可能生效的修改 需测试
+        contents.originalImage.copyRect(image, 0, 0,0,0,contents.width(),contents.height(),false,false);
         return image;
     }
 
@@ -61,7 +62,7 @@ public class SpriteHelper {
     }
 
     public static SpriteContents pack(NativeImage image){
-        return new SpriteContents(new ResourceLocation(BreakdownCore.MODID,"invalid"),new FrameSize(image.getWidth(),image.getHeight()),image, ResourceMetadata.EMPTY);
+        return new SpriteContents(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"invalid"),new FrameSize(image.getWidth(),image.getHeight()),image, ResourceMetadata.EMPTY);
     }
 
 

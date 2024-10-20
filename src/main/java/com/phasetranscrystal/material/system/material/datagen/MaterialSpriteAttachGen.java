@@ -1,7 +1,7 @@
 package com.phasetranscrystal.material.system.material.datagen;
 
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.module.datagen.ExpandSpriteSourceProvider;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.module.datagen.ExpandSpriteSourceProvider;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MaterialSpriteAttachGen extends ExpandSpriteSourceProvider {
     public MaterialSpriteAttachGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, BreakdownCore.MODID, existingFileHelper);
+        super(output, lookupProvider, BreaMaterials.MODID, existingFileHelper);
     }
 
     @Override

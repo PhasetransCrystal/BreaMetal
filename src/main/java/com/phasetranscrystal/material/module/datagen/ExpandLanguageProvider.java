@@ -2,7 +2,7 @@ package com.phasetranscrystal.material.module.datagen;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.landis.breakdowncore.helper.StringHelper;
+import com.phasetranscrystal.material.helper.StringHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -110,10 +110,11 @@ public abstract class ExpandLanguageProvider implements DataProvider, IAgencyPro
     public void add(Item key, String name) {
         add(key.getDescriptionId(), name);
     }
-
+//TODO Enchantment getDescriptionId
+/*
     public void add(Enchantment key, String name) {
         add(key.getDescriptionId(), name);
-    }
+    } */
 
     public void add(MobEffect key, String name) {
         add(key.getDescriptionId(), name);

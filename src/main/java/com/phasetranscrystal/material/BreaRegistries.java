@@ -1,15 +1,16 @@
 package com.phasetranscrystal.material;
 
 import com.phasetranscrystal.material.module.registry.ItemRegroup;
-import com.landis.breakdowncore.system.material.*;
-import com.landis.breakdowncore.system.material.datagen.RecipeMaterialGroupIngredient;
-import com.landis.breakdowncore.system.material.expansion.CombustibleType;
-import com.landis.breakdowncore.system.material.expansion.IngotType;
-import com.landis.breakdowncore.system.material.expansion.MissingMaterial;
-import com.landis.breakdowncore.system.material.expansion.materialfeature.CombustibleMF;
-import com.landis.breakdowncore.system.material.expansion.materialfeature.MetalMF;
-import com.landis.breakdowncore.system.material.expansion.materialfeature.PhaseTransitMF;
-import com.landis.breakdowncore.system.material.expansion.materialfeature.ThermoMF;
+import com.phasetranscrystal.material.system.material.*;
+import com.phasetranscrystal.material.system.material.datagen.RecipeMaterialGroupIngredient;
+import com.phasetranscrystal.material.system.material.expansion.CombustibleType;
+import com.phasetranscrystal.material.system.material.expansion.IngotType;
+import com.phasetranscrystal.material.system.material.expansion.MissingMaterial;
+import com.phasetranscrystal.material.system.material.expansion.materialfeature.CombustibleMF;
+import com.phasetranscrystal.material.system.material.expansion.materialfeature.MetalMF;
+import com.phasetranscrystal.material.system.material.expansion.materialfeature.PhaseTransitMF;
+import com.phasetranscrystal.material.system.material.expansion.materialfeature.ThermoMF;
+import com.phasetranscrystal.material.system.material.Material;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

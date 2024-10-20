@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -97,7 +98,11 @@ public class TMIModel implements BakedModel {
             shapeModel.parent = ModelBakery.GENERATION_MARKER;
             shapeModel.transforms = ModelHelper.copyDefaultItemTransforms();
             this.missingModel = BreaMaterials.getItemModelgen().generateBlockModel(net.minecraft.client.resources.model.Material::sprite, shapeModel)
-                    .bake(bakery.new ModelBakerImpl((location, material) -> material.sprite(), bakeName), net.minecraft.client.resources.model.Material::sprite, new SimpleModelState(Transformation.identity()), bakeName);//好丑……
+                    .bake(bakery.new ModelBakerImpl((location, material) -> material.sprite(),
+                            ModelResourceLocation.inventory(bakeName)), net.minecraft.client.resources.model.Material::sprite, new SimpleModelState(Transformation.identity()));//好丑……
+            //TODO 工作？
+            // OLD                .bake(bakery.new ModelBakerImpl((location, material) -> material.sprite(),
+            //                            ModelResourceLocation.inventory(bakeName)), net.minecraft.client.resources.model.Material::sprite, new SimpleModelState(Transformation.identity()), bakeName);
             inited = true;
         }
 
@@ -108,12 +113,18 @@ public class TMIModel implements BakedModel {
                 BakedModel baked;
                 if (!materialType.intermediateProduct || idpCache.containsKey(materialType.x16color)) {
                     TextureAtlasSprite sprite = ((TextureAtlas) Minecraft.getInstance().getTextureManager().getTexture(BLOCK_ATLAS)).getSprite(materialType.intermediateProduct ? System$Material.idpForAtlasID(materialType.x16color, type) : System$Material.combineForAtlasID(materialType, type));
-                    baked = BreaMaterials.getItemModelgen().generateBlockModel(m -> sprite, shapeModel).bake(bakery.new ModelBakerImpl((m, n) -> sprite, bakeName),
+                    baked = BreaMaterials.getItemModelgen().generateBlockModel(m -> sprite, shapeModel).bake(bakery.new ModelBakerImpl((m, n) -> sprite, ModelResourceLocation.inventory(bakeName)),
                             shapeModel,
                             m -> sprite,
                             new SimpleModelState(Transformation.identity()),
-                            bakeName,
                             false
+                            //TODO 工作？ OLD
+                            //bake(bakery.new ModelBakerImpl((m, n) -> sprite, bakeName),
+                            //shapeModel,
+                            //m -> sprite,
+                            //new SimpleModelState(Transformation.identity()),
+                            //bakeName,
+                            //false
                     );
                 } else {
                     baked = idpCache.get(materialType.x16color);

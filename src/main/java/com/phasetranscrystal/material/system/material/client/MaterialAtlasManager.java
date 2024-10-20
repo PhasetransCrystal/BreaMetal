@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.texture.atlas.SpriteSourceList;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceMetadata;

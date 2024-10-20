@@ -13,18 +13,21 @@ import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+import static net.minecraft.resources.ResourceLocation.parse;
+import static net.minecraft.resources.ResourceLocation.withDefaultNamespace;
+
 public abstract class ExpandSpriteSourceProvider extends JsonCodecProvider<HashSet<SpriteSource>> implements IAgencyProvider<ExpandSpriteSourceProvider>{
 
-    public static final ResourceLocation BLOCKS_ATLAS = new ResourceLocation("blocks");
-    public static final ResourceLocation BANNER_PATTERNS_ATLAS = new ResourceLocation("banner_patterns");
-    public static final ResourceLocation BEDS_ATLAS = new ResourceLocation("beds");
-    public static final ResourceLocation CHESTS_ATLAS = new ResourceLocation("chests");
-    public static final ResourceLocation SHIELD_PATTERNS_ATLAS = new ResourceLocation("shield_patterns");
-    public static final ResourceLocation SHULKER_BOXES_ATLAS = new ResourceLocation("shulker_boxes");
-    public static final ResourceLocation SIGNS_ATLAS = new ResourceLocation("signs");
-    public static final ResourceLocation MOB_EFFECTS_ATLAS = new ResourceLocation("mob_effects");
-    public static final ResourceLocation PAINTINGS_ATLAS = new ResourceLocation("paintings");
-    public static final ResourceLocation PARTICLES_ATLAS = new ResourceLocation("particles");
+    public static final ResourceLocation BLOCKS_ATLAS = parse("blocks");
+    public static final ResourceLocation BANNER_PATTERNS_ATLAS = parse("banner_patterns");
+    public static final ResourceLocation BEDS_ATLAS = parse("beds");
+    public static final ResourceLocation CHESTS_ATLAS = parse("chests");
+    public static final ResourceLocation SHIELD_PATTERNS_ATLAS = parse("shield_patterns");
+    public static final ResourceLocation SHULKER_BOXES_ATLAS = parse("shulker_boxes");
+    public static final ResourceLocation SIGNS_ATLAS = parse("signs");
+    public static final ResourceLocation MOB_EFFECTS_ATLAS = parse("mob_effects");
+    public static final ResourceLocation PAINTINGS_ATLAS = parse("paintings");
+    public static final ResourceLocation PARTICLES_ATLAS = parse("particles");
     private final List<ExpandSpriteSourceProvider> agency = new ArrayList<>();
 
     private final Map<ResourceLocation,SourceList> atlases = new HashMap<>();

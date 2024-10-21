@@ -19,17 +19,17 @@ public class MaterialSpriteAttachGen extends ExpandSpriteSourceProvider {
         super.gather();
         SourceList sourceList = atlas(BLOCKS_ATLAS);
 //        for(Material material : Registry$Material.MATERIAL){
-//            sourceList.addSource(new SingleFile(material.id.withPath(id -> "brea/material/" + id), Optional.empty()));
+//            sourceList.addSource(new SingleFile(material.id.withPath(id -> "breamaterial/material/" + id), Optional.empty()));
 //        }
 //        for(MaterialItemType type : Registry$Material.MATERIAL_ITEM_TYPE){
-//            sourceList.addSource(new SingleFile(type.id.withPath(s -> "brea/mit/" + s),Optional.empty()));
-//            if(this.existingFileHelper.exists(type.id.withPath(s -> "textures/brea/mit_cover/" + s + ".png"), PackType.CLIENT_RESOURCES)){
-//                sourceList.addSource(new SingleFile(type.id.withPath(s -> "brea/mit_cover/" + s),Optional.empty()));
+//            sourceList.addSource(new SingleFile(type.id.withPath(s -> "breamaterial/mit/" + s),Optional.empty()));
+//            if(this.existingFileHelper.exists(type.id.withPath(s -> "textures/breamaterial/mit_cover/" + s + ".png"), PackType.CLIENT_RESOURCES)){
+//                sourceList.addSource(new SingleFile(type.id.withPath(s -> "breamaterial/mit_cover/" + s),Optional.empty()));
 //            }
 //        }
 
-        sourceList.addSource(new DirectoryLister("brea/material/mit","brea/material/mit/"));
-//        sourceList.addSource(new DirectoryLister("brea/mit","brea/mit/"));
-//        sourceList.addSource(new DirectoryLister("brea/mit_cover","brea/mit_cover/"));
+        sourceList.addSource(new DirectoryLister("breamaterial/material/mit","breamaterial/material/mit/"));
+//        sourceList.addSource(new DirectoryLister("breamaterial/mit","breamaterial/mit/"));
+//        sourceList.addSource(new DirectoryLister("breamaterial/mit_cover","breamaterial/mit_cover/"));
     }
 }

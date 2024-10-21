@@ -1,10 +1,10 @@
 package com.phasetranscrystal.material.system.material.datagen;
 
 import com.google.common.collect.ImmutableSet;
-import com.landis.breakdowncore.BreaRegistries;
-import com.landis.breakdowncore.helper.CodecHelper;
-import com.landis.breakdowncore.module.codec.NumberChecker;
-import com.landis.breakdowncore.system.material.*;
+import com.phasetranscrystal.material.BreaRegistries;
+import com.phasetranscrystal.material.helper.CodecHelper;
+import com.phasetranscrystal.material.module.codec.NumberChecker;
+import com.phasetranscrystal.material.system.material.*;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class RecipeMaterialGroupIngredient extends Ingredient {
-    public static final Logger LOGGER = LogManager.getLogger("BREA:RecipeIng/MGI");
+    public static final Logger LOGGER = LogManager.getLogger("BREAMATERIAL:RecipeIng/MGI");
     private static final Codec<HolderSet<Material>> MATERIAL_CODEC = HolderSetCodec.create(Registry$Material.MATERIAL.key(), Registry$Material.MATERIAL.holderByNameCodec(), false);
     private static final Codec<HolderSet<MaterialItemType>> TYPE_CODEC = HolderSetCodec.create(Registry$Material.MATERIAL_ITEM_TYPE.key(), Registry$Material.MATERIAL_ITEM_TYPE.holderByNameCodec(), false);
     private static final Codec<HolderSet<MaterialFeatureType<?>>> FEATURE_CODEC = HolderSetCodec.create(Registry$Material.MATERIAL_FEATURE.key(), Registry$Material.MATERIAL_FEATURE.holderByNameCodec(), false);
@@ -65,7 +65,7 @@ public class RecipeMaterialGroupIngredient extends Ingredient {
     private boolean cacheFlag;
 
     private RecipeMaterialGroupIngredient(HolderSet<Material> materials, HolderSet<MaterialItemType> types, HolderSet<MaterialFeatureType<?>> features, NumberChecker purityRange, NumberChecker contentRange, NumberChecker validRange) {
-        super(Stream.of(new ItemValue(createInfo(materials, types, features, purityRange, contentRange, validRange))), BreaRegistries.MATERIAL_RECIPE_INGREDIENT);
+        super(Stream.of(new ItemValue(createInfo(materials, types, features, purityRange, contentRange, validRange))));
         this.materials = materials;
         this.types = types;
         this.features = features;
@@ -117,27 +117,27 @@ public class RecipeMaterialGroupIngredient extends Ingredient {
         ItemStack itemStack = new ItemStack(BreaRegistries.PLACEHOLDER);
         ListTag tags = new ListTag();
         if (materials != null) {
-            Component c = Component.translatable("brea.module.recipe.material.material").append(": ").append(CodecHelper.unwrapHolderSet(materials.unwrap(), 6));
-            tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
+            Component c = Component.translatable("breamaterial.module.recipe.material.material").append(": ").append(CodecHelper.unwrapHolderSet(materials.unwrap(), 6));
+            tags.add(StringTag.valueOf(Component.Serializer.toJson(c,holderLookupProvider)));
         }
         if (types != null) {
-            Component c = Component.translatable("brea.module.recipe.material.type").append(": ").append(CodecHelper.unwrapHolderSet(types.unwrap(), 6));
+            Component c = Component.translatable("breamaterial.module.recipe.material.type").append(": ").append(CodecHelper.unwrapHolderSet(types.unwrap(), 6));
             tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
         }
         if (features != null) {
-            Component c = Component.translatable("brea.module.recipe.material.feature").append(": ").append(CodecHelper.unwrapHolderSet(features.unwrap(), 6));
+            Component c = Component.translatable("breamaterial.module.recipe.material.feature").append(": ").append(CodecHelper.unwrapHolderSet(features.unwrap(), 6));
             tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
         }
         if (purityRange != null) {
-            Component c = Component.translatable("brea.module.recipe.material.purity").append(": ").append(purityRange.toString());
+            Component c = Component.translatable("breamaterial.module.recipe.material.purity").append(": ").append(purityRange.toString());
             tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
         }
         if (contentRange != null) {
-            Component c = Component.translatable("brea.module.recipe.material.content").append(": ").append(contentRange.toString());
+            Component c = Component.translatable("breamaterial.module.recipe.material.content").append(": ").append(contentRange.toString());
             tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
         }
         if (validRange != null) {
-            Component c = Component.translatable("brea.module.recipe.material.valid").append(": ").append(validRange.toString());
+            Component c = Component.translatable("breamaterial.module.recipe.material.valid").append(": ").append(validRange.toString());
             tags.add(StringTag.valueOf(Component.Serializer.toJson(c)));
         }
         itemStack.getOrCreateTagElement("display").put("Lore", tags);

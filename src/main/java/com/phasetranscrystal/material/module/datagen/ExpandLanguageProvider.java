@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class ExpandLanguageProvider implements DataProvider, IAgencyProvider<ExpandLanguageProvider>{
-    public static final Logger LOGGER = LogManager.getLogger("BREA:Datagen:Language");
+    public static final Logger LOGGER = LogManager.getLogger("BREAMATERIAL:Datagen:Language");
     private final Map<String, String> data = new TreeMap<>();
     public final PackOutput output;
     public final String modid;

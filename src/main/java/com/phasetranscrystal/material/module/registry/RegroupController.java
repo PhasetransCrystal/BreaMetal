@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class RegroupController {
-    public static final Logger LOGGER = LogManager.getLogger("BREA:RegGroup");
+    public static final Logger LOGGER = LogManager.getLogger("BREAMATERIAL:RegGroup");
     public static final Runnable RN = () -> {
     };
     public final String modid;

@@ -37,8 +37,8 @@ import static net.minecraft.client.renderer.texture.SpriteLoader.runSpriteSuppli
 
 @Deprecated(forRemoval = true)
 public class MaterialAtlasManager extends TextureAtlasHolder {
-    public static final Logger LOGGER = LogManager.getLogger("BREA:Material:AtlasManager");
-    public static final ResourceLocation MISSING = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"textures/brea/material/material/missing.png");
+    public static final Logger LOGGER = LogManager.getLogger("BREAMATERIAL:Material:AtlasManager");
+    public static final ResourceLocation MISSING = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"textures/breamaterial/material/material/missing.png");
     private static MaterialAtlasManager manager;
 
     public static MaterialAtlasManager init() {
@@ -96,7 +96,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
                         //加载材料纹理
                         SpriteContents mat;
                         {
-                            ResourceLocation location = material.id.withPath(s -> "textures/brea/material/material/" + s + ".png");
+                            ResourceLocation location = material.id.withPath(s -> "textures/breamaterial/material/material/" + s + ".png");
                             mat = resourceLoader.loadSprite(material.id,rm.getResource(location).orElseGet(()->{
                                 LOGGER.warn("Can't find texture at ResourceLocation={} for Material={id:{}}. Use MISSING.",location,material.id);
                                 return rm.getResource(MISSING).get();
@@ -108,7 +108,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
                         for (MaterialItemType type : (material.equals(BreaRegistries.MaterialReg.MISSING.get())) ? Registry$Material.MATERIAL_ITEM_TYPE : material.getOrCreateTypes()) {
                             //创建物品类型alpha通道缓存
                             if (!alphaCache.containsKey(type)) {
-                                ResourceLocation location = type.id.withPath(s -> "textures/brea/material/mit/" + s + ".png");
+                                ResourceLocation location = type.id.withPath(s -> "textures/breamaterial/material/mit/" + s + ".png");
                                 rm.getResource(location).ifPresentOrElse(r -> alphaCache.put(type,resourceLoader.loadSprite(type.id,r)), ()->{
                                     LOGGER.warn("Can't find texture at ResourceLocation={} for MaterialItemType={id:{}}.",location,type.id);
                                     alphaCache.put(type,null);
@@ -117,13 +117,13 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
 
                             //创建物品覆盖层缓存
                             if (!coverCache.containsKey(type)) {
-                                coverCache.put(type,rm.getResource(type.id.withPath(s -> "textures/brea/material/mit_cover/" + s + ".png"))
+                                coverCache.put(type,rm.getResource(type.id.withPath(s -> "textures/breamaterial/material/mit_cover/" + s + ".png"))
                                         .map(r -> resourceLoader.loadSprite(type.id,r)).orElse(null));
                             }
 
                             ResourceLocation l = combine(material,type);
                             //加载可选的替换材质
-                            rm.getResource(material.id.withPath(s -> "textures/brea/material/override/" + s + "/" + type.id.getNamespace() + "_" + type.id.getPath() + ".png")).ifPresentOrElse(
+                            rm.getResource(material.id.withPath(s -> "textures/breamaterial/material/override/" + s + "/" + type.id.getNamespace() + "_" + type.id.getPath() + ".png")).ifPresentOrElse(
                                     r -> contents.add(resourceLoader.loadSprite(l,r)),
                                     ()->{//以及……强制组合  我不想写动态解析了
                                         //TODO 动态材质的处理与组合

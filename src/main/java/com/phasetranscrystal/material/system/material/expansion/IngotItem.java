@@ -1,7 +1,7 @@
 package com.phasetranscrystal.material.system.material.expansion;
 
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.BreaRegistries;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.BreaRegistries;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.TypedMaterialItem;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +29,7 @@ public class IngotItem extends TypedMaterialItem {
         if(stack.is(this)){
             return material.id;
         }
-        return new ResourceLocation(BreakdownCore.MODID,"fallback");
+        return ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"fallback");
     }
 
     @Override

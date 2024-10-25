@@ -1,7 +1,7 @@
 package com.phasetranscrystal.material.system.material.expansion;
 
 import com.google.common.collect.ImmutableSet;
-import com.landis.breakdowncore.BreakdownCore;
+import com.phasetranscrystal.material.BreaMaterials;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;
 import com.phasetranscrystal.material.system.material.Registry$Material;
@@ -11,7 +11,7 @@ public final class MissingMaterial extends Material {
     private ImmutableSet<MaterialItemType> types;
 
     public MissingMaterial() {
-        super(new ResourceLocation(BreakdownCore.MODID,"missing"),false);
+        super(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"missing"),false);
     }
 
     @Override

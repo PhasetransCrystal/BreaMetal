@@ -1,7 +1,7 @@
 package com.phasetranscrystal.material.system.material;
 
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.ModBusConsumer;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.ModBusConsumer;
 import com.phasetranscrystal.material.system.material.client.TMIModel;
 import com.phasetranscrystal.material.system.material.datagen.MitModelGen;
 import com.phasetranscrystal.material.system.material.expansion.IngotType;
@@ -76,7 +76,7 @@ public class MaterialItemType {
      */
     public void primaryRegister(@Nullable RegisterEvent event) {
         Registry<Item> registry = (Registry<Item>) ModBusConsumer.REGS_MAP.get(Registries.ITEM);
-        ResourceLocation reg = new ResourceLocation(BreakdownCore.MODID, id.getNamespace() + "_" + id.getPath());
+        ResourceLocation reg = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, id.getNamespace() + "_" + id.getPath());
         autoRegKey = ResourceKey.create(Registries.ITEM, reg);
         Registry.register(registry, reg, new TypedMaterialItem(() -> this));
     }

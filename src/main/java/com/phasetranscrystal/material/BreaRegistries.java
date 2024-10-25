@@ -2,7 +2,6 @@ package com.phasetranscrystal.material;
 
 import com.phasetranscrystal.material.module.registry.ItemRegroup;
 import com.phasetranscrystal.material.system.material.*;
-import com.phasetranscrystal.material.system.material.datagen.RecipeMaterialGroupIngredient;
 import com.phasetranscrystal.material.system.material.expansion.CombustibleType;
 import com.phasetranscrystal.material.system.material.expansion.IngotType;
 import com.phasetranscrystal.material.system.material.expansion.MissingMaterial;
@@ -38,8 +37,7 @@ public class BreaRegistries {
         }
     }).title(Component.translatable("tab.brea.default")).icon(() -> new ItemStack(Items.COMMAND_BLOCK)).build());
     public static final ItemRegroup<Item> PLACEHOLDER = BreaMaterials.REGISTER.item("placeholder").addExplainPre().texture().build();
-    public static final DeferredHolder<IngredientType<?>, IngredientType<RecipeMaterialGroupIngredient>> MATERIAL_RECIPE_INGREDIENT =
-            INGREDIENT_TYPE.register("material_recipe", () -> new IngredientType<>(RecipeMaterialGroupIngredient.CODEC));
+
 
 
     /**

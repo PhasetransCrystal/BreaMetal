@@ -2,10 +2,10 @@ package com.phasetranscrystal.material.system.material;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.BreaRegistries;
-import com.landis.breakdowncore.event.render.SpriteBeforeStitchEvent;
-import com.landis.breakdowncore.helper.SpriteHelper;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.BreaRegistries;
+import com.phasetranscrystal.material.event.render.SpriteBeforeStitchEvent;
+import com.phasetranscrystal.material.helper.SpriteHelper;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SpriteContents;
@@ -18,6 +18,7 @@ import net.minecraft.server.packs.resources.ResourceMetadata;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -37,7 +38,7 @@ import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
 /**
  * 本类用于处理在注册与注册前阶段的各种额外处理需求
  */
-@Mod.EventBusSubscriber(modid = BreakdownCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = BreaMaterials.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class EventConsumer$Material {
     private static final boolean[] REG_FLAG = new boolean[]{false, false, false, false};
     private static boolean preRegFlag = false;
@@ -119,14 +120,14 @@ public class EventConsumer$Material {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = BreakdownCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = BreaMaterials.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class Client {
-        public static final ResourceLocation MISSING_MATERIAL_SPRITE = new ResourceLocation(BreakdownCore.MODID, "textures/brea/material/material/missing.png");
+        public static final ResourceLocation MISSING_MATERIAL_SPRITE = ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "textures/brea/material/material/missing.png");
         public static final Logger MATERIAL_LOGGER = LogManager.getLogger("BREA:Material:AtlasManager");
 
         @SubscribeEvent
         public static void stitchToAtlas(SpriteBeforeStitchEvent event) {
-            if (event.atlasLocation.equals(new ResourceLocation("minecraft", "blocks"))) {
+            if (event.atlasLocation.equals(ResourceLocation.fromNamespaceAndPath("minecraft", "blocks"))) {
                 ResourceManager rm = Minecraft.getInstance().getResourceManager();
 
                 //虽然不是这么用的，但是比较方便

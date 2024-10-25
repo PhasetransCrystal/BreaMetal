@@ -1,11 +1,12 @@
 package com.phasetranscrystal.material.system.material.expansion;
 
-import com.landis.breakdowncore.ModBusConsumer;
+import com.phasetranscrystal.material.ModBusConsumer;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;
 import com.phasetranscrystal.material.system.material.client.TMIModel;
 import com.phasetranscrystal.material.system.material.datagen.MitModelGen;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -59,7 +60,7 @@ public class IngotType extends MaterialItemType {
         super.consumeModelReg(event);
         ModelBakery bakery = event.getModelBakery();
         for (IngotItem item : WITH_RESOURCE.values()) {
-            event.getModels().put(BuiltInRegistries.ITEM.getKey(item), new TMIModel(bakery, this));
+            event.getModels().put(ModelResourceLocation.inventory(BuiltInRegistries.ITEM.getKey(item)), new TMIModel(bakery, this));
         }
     }
 

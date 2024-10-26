@@ -1,6 +1,8 @@
 package com.phasetranscrystal.material.system.material;
 
-import com.landis.breakdowncore.BreaRegistries;
+import com.phasetranscrystal.material.BreaRegistries;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +26,8 @@ public interface ITypedMaterialObj {
 
     default void setMaterial(ItemStack stack, Material material) {
         if (stack.is((Item) this)) {
-            stack.getOrCreateTagElement("brea_data").putString("material", material.id.toString());
+            //TODO 啊？？？
+            stack.get(DataComponents.CONTAINER).putString("material", material.id.toString());
         }
     }
 

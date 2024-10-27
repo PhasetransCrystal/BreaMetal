@@ -27,7 +27,7 @@ public final class MaterialFeatureHandle<I extends IMaterialFeature<I>>{
     }
 
     public MaterialFeatureHandle(String modid,String path,Class<I> clazz){
-        this(new ResourceLocation(modid,path),clazz);
+        this(ResourceLocation.fromNamespaceAndPath(modid,path),clazz);
     }
 
     public ImmutableSet<MaterialItemType> getOrCreateSet(){

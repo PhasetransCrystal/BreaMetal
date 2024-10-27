@@ -3,8 +3,8 @@ package com.phasetranscrystal.material.system.material;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
-import com.landis.breakdowncore.BreakdownCore;
-import com.landis.breakdowncore.event.EventHooks;
+import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.event.EventHooks;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -133,7 +133,7 @@ public class System$Material {
         for (Material material : Registry$Material.MATERIAL) {
             sprite = atlas.getSprite(material.id.withPath(id -> "brea/material/" + id));
             if (sprite.equals(missing)) {
-                sprite = atlas.getSprite(new ResourceLocation(BreakdownCore.MODID, "brea/material/missing"));
+                sprite = atlas.getSprite(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "brea/material/missing"));
             }
             d.put(material, sprite);
         }
@@ -164,7 +164,7 @@ public class System$Material {
 
 
     public static ResourceLocation combineForAtlasID(Material material, MaterialItemType type) {
-        return new ResourceLocation("brea_" + material.id.getNamespace() + "_" + type.id.getNamespace(), material.id.getPath() + "_" + type.id.getPath());
+        return ResourceLocation.fromNamespaceAndPath("brea_" + material.id.getNamespace() + "_" + type.id.getNamespace(), material.id.getPath() + "_" + type.id.getPath());
     }
 
     public static ResourceLocation idpForAtlasID(int x16color, MaterialItemType type) {

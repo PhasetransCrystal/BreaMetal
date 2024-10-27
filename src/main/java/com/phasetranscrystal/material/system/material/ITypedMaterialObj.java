@@ -1,11 +1,13 @@
 package com.phasetranscrystal.material.system.material;
 
 import com.phasetranscrystal.material.BreaRegistries;
+import com.phasetranscrystal.material.ModDataComponents;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -26,8 +28,8 @@ public interface ITypedMaterialObj {
 
     default void setMaterial(ItemStack stack, Material material) {
         if (stack.is((Item) this)) {
-            //TODO 啊？？？
-            stack.get(DataComponents.CONTAINER).putString("material", material.id.toString());
+            //TODO 啊---
+            stack.set(ModDataComponents.MATERIALS,material.id.toString());//.putString("material", material.id.toString());
         }
     }
 

@@ -1,6 +1,6 @@
 package com.phasetranscrystal.material.system.material.expansion.materialfeature;
 
-import com.landis.breakdowncore.BreaRegistries;
+import com.phasetranscrystal.material.BreaRegistries;
 import com.phasetranscrystal.material.system.material.IMaterialFeature;
 import com.phasetranscrystal.material.system.material.MaterialFeatureType;
 import com.phasetranscrystal.material.system.material.MaterialItemType;

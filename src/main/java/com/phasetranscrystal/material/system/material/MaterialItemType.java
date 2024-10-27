@@ -2,6 +2,7 @@ package com.phasetranscrystal.material.system.material;
 
 import com.phasetranscrystal.material.BreaMaterials;
 import com.phasetranscrystal.material.ModBusConsumer;
+import com.phasetranscrystal.material.ModDataComponents;
 import com.phasetranscrystal.material.system.material.client.TMIModel;
 import com.phasetranscrystal.material.system.material.datagen.MitModelGen;
 import com.phasetranscrystal.material.system.material.expansion.IngotType;
@@ -62,7 +63,8 @@ public class MaterialItemType {
     public @NonNull ItemStack createItem(Material material) {
         ItemStack stack = getHolder();
         StringTag tag = StringTag.valueOf(material.id.toString());
-        stack.getOrCreateTagElement("brea_data").putString("material", material.id.toString());
+        //TODO 啊---
+        stack.set(ModDataComponents.MATERIALS,material.id.toString());//.putString("material", material.id.toString());
         return stack;
     }
 

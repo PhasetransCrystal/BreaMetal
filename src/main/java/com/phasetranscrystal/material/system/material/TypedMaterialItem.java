@@ -1,5 +1,6 @@
 package com.phasetranscrystal.material.system.material;
 
+import com.phasetranscrystal.material.ModDataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +30,7 @@ public class TypedMaterialItem extends Item implements ITypedMaterialObj{
     @Override
     public ResourceLocation getMaterialId(ItemStack stack) {
         if(stack.is(this)){
-            return new ResourceLocation(stack.getOrCreateTagElement("brea_data").getString("material"));
+            return ResourceLocation.fromNamespaceAndPath("breamaterial",stack.get(ModDataComponents.MATERIALS));
         }
         return null;
     }
@@ -45,8 +46,8 @@ public class TypedMaterialItem extends Item implements ITypedMaterialObj{
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         //一个由(材料)制成的(物品类型)
         //(材料描述，灰色)
     }

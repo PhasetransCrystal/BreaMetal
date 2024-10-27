@@ -42,8 +42,7 @@ public class BreaMaterials
             regroupController.itemModelProvider.addAgency(new MitModelGen(output,fileHelper));
             regroupController.spriteProvider.addAgency(new MaterialSpriteAttachGen(output,lookup,fileHelper));
         }));
-        modEventBus.addListener(this::commonSetup);
-        NeoForge.EVENT_BUS.register(this);
+        ModDataComponents.register(modEventBus);
     }
 
     private static ItemModelGenerator ITEM_MODELGEN;

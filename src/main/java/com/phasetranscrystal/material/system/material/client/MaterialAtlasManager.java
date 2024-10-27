@@ -105,6 +105,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
 
 //                        contents.add(mat);
 
+
                         for (MaterialItemType type : (material.equals(BreaRegistries.MaterialReg.MISSING.get())) ? Registry$Material.MATERIAL_ITEM_TYPE : material.getOrCreateTypes()) {
                             //创建物品类型alpha通道缓存
                             if (!alphaCache.containsKey(type)) {
@@ -152,6 +153,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
                             );
 
                         }
+
                     }
 
                     List<SpriteContents> e = new ArrayList<>(contents.stream().filter(Objects::nonNull).toList());

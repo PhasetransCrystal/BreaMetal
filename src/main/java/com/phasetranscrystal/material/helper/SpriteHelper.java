@@ -17,7 +17,7 @@ public class SpriteHelper {
     public static NativeImage firstFrame(SpriteContents contents){
         NativeImage image = new NativeImage(contents.width(),contents.height(),false);
         boolean animate = contents.animatedTexture != null;
-        //TODO 可能生效的修改 需测试
+        //TODO 可能生效的修改
         contents.originalImage.copyRect(image, 0, 0,0,0,contents.width(),contents.height(),false,false);
         return image;
     }

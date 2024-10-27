@@ -1,6 +1,6 @@
 package com.phasetranscrystal.material.system.material;
 
-import com.landis.breakdowncore.BreaRegistries;
+import com.phasetranscrystal.material.BreaRegistries;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Function;

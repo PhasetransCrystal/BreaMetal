@@ -1,6 +1,6 @@
 package com.phasetranscrystal.material.system.material;
 
-import com.landis.breakdowncore.BreakdownCore;
+import com.phasetranscrystal.material.BreaMaterials;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public class Registry$Material {
         public static final ResourceKey<Registry<Material>> MATERIAL = create("material");
 
         public static <T> ResourceKey<Registry<T>> create(String name){
-            return ResourceKey.createRegistryKey(new ResourceLocation(BreakdownCore.MODID,name));
+            return ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,name));
         }
     }
 }

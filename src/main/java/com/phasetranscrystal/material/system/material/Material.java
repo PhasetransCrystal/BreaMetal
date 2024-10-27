@@ -3,7 +3,7 @@ package com.phasetranscrystal.material.system.material;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.landis.breakdowncore.BreaRegistries;
+import com.phasetranscrystal.material.BreaRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

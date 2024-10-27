@@ -51,15 +51,15 @@ public class BreaRegistries {
         public static final DeferredRegister<Material> MATERIAL = DeferredRegister.create(Registry$Material.MATERIAL, BreaMaterials.MODID);
 
         public static <I extends MaterialItemType> DeferredHolder<MaterialItemType, I> type(String id, Function<ResourceLocation, I> provider) {
-            return TYPE.register(id, () -> provider.apply(new ResourceLocation(TYPE.getNamespace(), id)));
+            return TYPE.register(id, () -> provider.apply(ResourceLocation.fromNamespaceAndPath(TYPE.getNamespace(), id)));
         }
 
         public static <I extends IMaterialFeature<I>> DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<I>> feature(String id, Class<I> provider) {
-            return FEATURE.register(id, () -> new MaterialFeatureType<>(new ResourceLocation(FEATURE.getNamespace(), id), provider));
+            return FEATURE.register(id, () -> new MaterialFeatureType<>(ResourceLocation.fromNamespaceAndPath(FEATURE.getNamespace(), id), provider));
         }
 
         public static <I extends Material> DeferredHolder<Material, I> material(String id, Function<ResourceLocation, I> provider) {
-            return MATERIAL.register(id, () -> provider.apply(new ResourceLocation(MATERIAL.getNamespace(), id)));
+            return MATERIAL.register(id, () -> provider.apply(ResourceLocation.fromNamespaceAndPath(MATERIAL.getNamespace(), id)));
         }
 
         public static final DeferredHolder<MaterialItemType, IngotType> INGOT = type("ingot", location -> new IngotType(90, location));
@@ -80,6 +80,6 @@ public class BreaRegistries {
     public static class JsonCodecReg {
         public static final DeferredRegister<LootPoolEntryType> LOOT_POOL = DeferredRegister.create(Registries.LOOT_POOL_ENTRY_TYPE, BreaMaterials.MODID);
 
-        public static final DeferredHolder<LootPoolEntryType, LootPoolEntryType> MATERIAL_ITEM_LOOT_POOL = LOOT_POOL.register("material_item", () -> new LootPoolEntryType(LootMaterialItem.CODEC));
+        //public static final DeferredHolder<LootPoolEntryType, LootPoolEntryType> MATERIAL_ITEM_LOOT_POOL = LOOT_POOL.register("material_item", () -> new LootPoolEntryType(LootMaterialItem.CODEC));
     }
 }

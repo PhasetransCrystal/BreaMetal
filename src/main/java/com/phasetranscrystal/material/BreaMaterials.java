@@ -42,6 +42,7 @@ public class BreaMaterials
             regroupController.itemModelProvider.addAgency(new MitModelGen(output,fileHelper));
             regroupController.spriteProvider.addAgency(new MaterialSpriteAttachGen(output,lookup,fileHelper));
         }));
+        ModDataComponents.register(modEventBus);
         BreaRegistries.ITEM.register(modEventBus);
         BreaRegistries.TAB.register(modEventBus);
         BreaRegistries.INGREDIENT_TYPE.register(modEventBus);
@@ -49,7 +50,6 @@ public class BreaMaterials
         BreaRegistries.MaterialReg.FEATURE.register(modEventBus);
         BreaRegistries.MaterialReg.TYPE.register(modEventBus);
         BreaRegistries.JsonCodecReg.LOOT_POOL.register(modEventBus);
-        ModDataComponents.register(modEventBus);
     }
 
     private static ItemModelGenerator ITEM_MODELGEN;

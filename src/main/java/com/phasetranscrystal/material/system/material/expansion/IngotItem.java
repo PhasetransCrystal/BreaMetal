@@ -25,11 +25,11 @@ public class IngotItem extends TypedMaterialItem {
     }
 
     @Override
-    public ResourceLocation getMaterialId(ItemStack stack) {
+    public Optional<ResourceLocation> getMaterialId(ItemStack stack) {
         if(stack.is(this)){
-            return material.id;
+            return Optional.ofNullable(material.id);
         }
-        return ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"fallback");
+        return Optional.of(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID,"fallback"));
     }
 
     @Override

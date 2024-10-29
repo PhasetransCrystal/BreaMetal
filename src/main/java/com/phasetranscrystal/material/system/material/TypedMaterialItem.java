@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**TypedMaterialItem材料类型物品<br>
@@ -28,11 +30,11 @@ public class TypedMaterialItem extends Item implements ITypedMaterialObj{
 
 
     @Override
-    public ResourceLocation getMaterialId(ItemStack stack) {
+    public Optional<ResourceLocation> getMaterialId(ItemStack stack) {
         if(stack.is(this)){
-            return ResourceLocation.fromNamespaceAndPath("breamaterial",stack.get(ModDataComponents.MATERIALS));
+            return Optional.ofNullable(stack.get(ModDataComponents.MATERIALS)).map(ResourceLocation::parse);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -42,7 +44,9 @@ public class TypedMaterialItem extends Item implements ITypedMaterialObj{
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack pStack) {
-        return materialId2Component(getMaterialId(pStack)).append(" ").append(mitId2Component(getMIType().id));
+        if(getMaterialId(pStack).isPresent())
+            return materialId2Component(getMaterialId(pStack).get()).append(" ").append(mitId2Component(getMIType().id));
+        return null;
     }
 
     @Override

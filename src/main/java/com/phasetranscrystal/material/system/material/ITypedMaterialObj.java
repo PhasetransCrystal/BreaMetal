@@ -18,13 +18,13 @@ import java.util.Optional;
  * @see TypedMaterialInfo
  */
 public interface ITypedMaterialObj {
-    ResourceLocation getMaterialId(ItemStack stack);
+    Optional<ResourceLocation> getMaterialId(ItemStack stack);
 
     default Optional<Material> getMaterial(ItemStack stack) {
-        return Optional.ofNullable(Registry$Material.MATERIAL.get(getMaterialId(stack)));
+        if(getMaterialId(stack).isPresent())
+            return Optional.ofNullable(Registry$Material.MATERIAL.get(getMaterialId(stack).get()));
+        return Optional.empty();
     }
-
-    ;
 
     default void setMaterial(ItemStack stack, Material material) {
         if (stack.is((Item) this)) {
@@ -38,7 +38,10 @@ public interface ITypedMaterialObj {
     }
 
     default Material getMaterialOrMissing(ItemStack stack) {
-        Material m = Registry$Material.MATERIAL.get(getMaterialId(stack));
+        Material m = null;
+        if(getMaterialId(stack).isPresent()){
+            m = Registry$Material.MATERIAL.get(getMaterialId(stack).get());
+        }
         return m == null ? BreaRegistries.MaterialReg.MISSING.get() : m;
     }
 
@@ -55,8 +58,6 @@ public interface ITypedMaterialObj {
     default long getContent() {
         return getMIType().content;
     }
-
-    ;
 
     default float getPurity() {
         return getMIType().purity;

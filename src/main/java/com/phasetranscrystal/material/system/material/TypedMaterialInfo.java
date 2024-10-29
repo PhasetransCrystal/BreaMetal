@@ -16,8 +16,8 @@ public record TypedMaterialInfo(Material material, MaterialItemType mit) impleme
     }
 
     @Override
-    public ResourceLocation getMaterialId(ItemStack stack) {
-        return material.id;
+    public Optional<ResourceLocation> getMaterialId(ItemStack stack) {
+        return  Optional.of(material.id);
     }
 
     @Override

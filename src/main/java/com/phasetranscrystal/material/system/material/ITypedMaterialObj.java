@@ -2,12 +2,10 @@ package com.phasetranscrystal.material.system.material;
 
 import com.phasetranscrystal.material.BreaRegistries;
 import com.phasetranscrystal.material.ModDataComponents;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
+import com.phasetranscrystal.material.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -22,7 +20,7 @@ public interface ITypedMaterialObj {
 
     default Optional<Material> getMaterial(ItemStack stack) {
         if(getMaterialId(stack).isPresent())
-            return Optional.ofNullable(Registry$Material.MATERIAL.get(getMaterialId(stack).get()));
+            return Optional.ofNullable(Registries.MATERIAL.get(getMaterialId(stack).get()));
         return Optional.empty();
     }
 
@@ -40,7 +38,7 @@ public interface ITypedMaterialObj {
     default Material getMaterialOrMissing(ItemStack stack) {
         Material m = null;
         if(getMaterialId(stack).isPresent()){
-            m = Registry$Material.MATERIAL.get(getMaterialId(stack).get());
+            m = Registries.MATERIAL.get(getMaterialId(stack).get());
         }
         return m == null ? BreaRegistries.MaterialReg.MISSING.get() : m;
     }

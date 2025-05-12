@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.material.BreaMaterials;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;
-import com.phasetranscrystal.material.system.material.Registry$Material;
+import com.phasetranscrystal.material.Registries;
 import net.minecraft.resources.ResourceLocation;
 
 public final class MissingMaterial extends Material {
@@ -17,7 +17,7 @@ public final class MissingMaterial extends Material {
     @Override
     public ImmutableSet<MaterialItemType> getOrCreateTypes() {
         if(types == null){
-            types = ImmutableSet.copyOf(Registry$Material.MATERIAL_ITEM_TYPE);
+            types = ImmutableSet.copyOf(Registries.MATERIAL_ITEM_TYPE);
         }
         return types;
     }

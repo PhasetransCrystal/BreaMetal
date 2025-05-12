@@ -10,7 +10,6 @@ import com.phasetranscrystal.material.system.material.expansion.materialfeature.
 import com.phasetranscrystal.material.system.material.expansion.materialfeature.PhaseTransitMF;
 import com.phasetranscrystal.material.system.material.expansion.materialfeature.ThermoMF;
 import com.phasetranscrystal.material.system.material.Material;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,7 +26,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.function.Function;
 
 public class BreaRegistries {
-    public static final DeferredRegister<CreativeModeTab> TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BreaMaterials.MODID);
+    public static final DeferredRegister<CreativeModeTab> TAB = DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, BreaMaterials.MODID);
     public static final DeferredRegister<Item> ITEM = DeferredRegister.createItems(BreaMaterials.MODID);
     public static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPE = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, BreaMaterials.MODID);
 
@@ -47,9 +46,9 @@ public class BreaRegistries {
      */
 
     public static class MaterialReg {
-        public static final DeferredRegister<MaterialItemType> TYPE = DeferredRegister.create(Registry$Material.MATERIAL_ITEM_TYPE, BreaMaterials.MODID);
-        public static final DeferredRegister<MaterialFeatureType<?>> FEATURE = DeferredRegister.create(Registry$Material.MATERIAL_FEATURE, BreaMaterials.MODID);
-        public static final DeferredRegister<Material> MATERIAL = DeferredRegister.create(Registry$Material.MATERIAL, BreaMaterials.MODID);
+        public static final DeferredRegister<MaterialItemType> TYPE = DeferredRegister.create(Registries.MATERIAL_ITEM_TYPE, BreaMaterials.MODID);
+        public static final DeferredRegister<MaterialFeatureType<?>> FEATURE = DeferredRegister.create(Registries.MATERIAL_FEATURE, BreaMaterials.MODID);
+        public static final DeferredRegister<Material> MATERIAL = DeferredRegister.create(Registries.MATERIAL, BreaMaterials.MODID);
 
         public static <I extends MaterialItemType> DeferredHolder<MaterialItemType, I> type(String id, Function<ResourceLocation, I> provider) {
             return TYPE.register(id, () -> provider.apply(ResourceLocation.fromNamespaceAndPath(TYPE.getNamespace(), id)));
@@ -79,7 +78,7 @@ public class BreaRegistries {
     }
 
     public static class JsonCodecReg {
-        public static final DeferredRegister<LootPoolEntryType> LOOT_POOL = DeferredRegister.create(Registries.LOOT_POOL_ENTRY_TYPE, BreaMaterials.MODID);
+        public static final DeferredRegister<LootPoolEntryType> LOOT_POOL = DeferredRegister.create(net.minecraft.core.registries.Registries.LOOT_POOL_ENTRY_TYPE, BreaMaterials.MODID);
 
         //public static final DeferredHolder<LootPoolEntryType, LootPoolEntryType> MATERIAL_ITEM_LOOT_POOL = LOOT_POOL.register("material_item", () -> new LootPoolEntryType(LootMaterialItem.CODEC));
     }

@@ -1,7 +1,6 @@
 package com.phasetranscrystal.material.event;
 
 import com.phasetranscrystal.material.event.render.SpriteBeforeStitchEvent;
-import com.phasetranscrystal.material.system.material.Handler$Material;
 import com.phasetranscrystal.material.system.material.datagen.MaterialReflectDataGatherEvent;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.neoforged.fml.ModLoader;

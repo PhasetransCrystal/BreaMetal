@@ -3,9 +3,8 @@ package com.phasetranscrystal.material.system.material;
 import com.phasetranscrystal.material.system.material.expansion.materialfeature.MetalMF;
 import com.phasetranscrystal.material.system.material.expansion.materialfeature.PhaseTransitMF;
 import com.phasetranscrystal.material.system.material.expansion.materialfeature.ThermoMF;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,13 +30,13 @@ public interface IMaterialFeature<I extends IMaterialFeature<I>> {
     default I getInstance(){return (I) this;}
 
     /**返回一个注册了的材料特征类型*/
-    DeferredHolder<MaterialFeatureType<?>,MaterialFeatureType<I>> getType();
+    Holder<MaterialFeatureType<I>> getType();
 
     /**获取该特征所包含的物品类型。原则上允许根据材料特性的不同内容返回不同的物品类型组。*/
     HashSet<? extends MaterialItemType> forItemTypes();
 
     /**依赖的其它材料特征的id。在不满足时，对应材料的注册将被阻止。*/
-    default @Nullable List<ResourceLocation> dependencies(){
-        return null;
+    default List<ResourceLocation> dependencies(){
+        return List.of();
     };
 }

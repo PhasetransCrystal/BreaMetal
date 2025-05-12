@@ -1,6 +1,10 @@
-package com.phasetranscrystal.material.system.material;
+package com.phasetranscrystal.material;
 
-import com.phasetranscrystal.material.BreaMaterials;
+import com.mojang.serialization.Codec;
+import com.phasetranscrystal.material.system.material.IMaterialFeature;
+import com.phasetranscrystal.material.system.material.Material;
+import com.phasetranscrystal.material.system.material.MaterialFeatureType;
+import com.phasetranscrystal.material.system.material.MaterialItemType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +12,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Registry$Material {
+public class Registries {
     public static final Logger LOGGER = LogManager.getLogger("BREA:Material:Registry");
 
     public static final Registry<MaterialItemType> MATERIAL_ITEM_TYPE = new RegistryBuilder<>(Keys.MATERIAL_ITEM_TYPE).sync(true).create();

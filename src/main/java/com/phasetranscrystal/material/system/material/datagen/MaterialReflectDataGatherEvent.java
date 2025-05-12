@@ -1,6 +1,5 @@
 package com.phasetranscrystal.material.system.material.datagen;
 
-import com.phasetranscrystal.material.system.material.Handler$Material;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 

@@ -1,7 +1,6 @@
 package com.phasetranscrystal.material;
 
 import com.phasetranscrystal.material.module.registry.RegroupController;
-import com.phasetranscrystal.material.system.material.datagen.MaterialSpriteAttachGen;
 import com.phasetranscrystal.material.system.material.datagen.MitModelGen;
 import com.phasetranscrystal.material.system.material.datagen.TextureGen;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
@@ -13,18 +12,11 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
@@ -43,7 +35,7 @@ public class BreaMaterials
             CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
             regroupController.itemModelProvider.addAgency(new MitModelGen(output,fileHelper));
-            regroupController.spriteProvider.addAgency(new MaterialSpriteAttachGen(output,lookup,fileHelper));
+//            regroupController.spriteProvider.addAgency(new MaterialSpriteAttachGen(output,lookup,fileHelper));
         }));
         ModDataComponents.register(modEventBus);
         BreaRegistries.ITEM.register(modEventBus);

@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.phasetranscrystal.material.BreaMaterials;
+import com.phasetranscrystal.material.Registries;
 import com.phasetranscrystal.material.event.EventHooks;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -28,6 +29,7 @@ import java.util.function.UnaryOperator;
  * System$Material<br>
  * System$Material是Material系统的额外内容总控中心，用于统一管理额外处理与额外的表生成。
  */
+@Deprecated(forRemoval = true)
 public class System$Material {
     public static final Logger LOGGER = LogManager.getLogger("BREA:Material:SystemController");
 
@@ -53,11 +55,11 @@ public class System$Material {
     /**
      * 额外处理器({@link Handler$Material})的统一控制区
      */
-    static void gatherData() {
-        Handler$Material handler = new Handler$Material();
-        EventHooks.postMaterialReflectDataGatherEvent(handler);
-        handler.setLock();
-    }
+//    static void gatherData() {
+//        Handler$Material handler = new Handler$Material();
+//        EventHooks.postMaterialReflectDataGatherEvent(handler);
+//        handler.setLock();
+//    }
 
     static Multimap<ResourceLocation, IMaterialFeature<?>> MF4M_ADDITION = HashMultimap.create();
     static Multimap<ResourceLocation, Holder<MaterialItemType>> MIT4MF_ADDITION = HashMultimap.create();
@@ -77,7 +79,7 @@ public class System$Material {
         infoB = false;
 
         Map<Class<?>, MaterialFeatureType<?>> a = new HashMap<>();
-        for (MaterialFeatureType<?> handle : Registry$Material.MATERIAL_FEATURE) {
+        for (MaterialFeatureType<?> handle : Registries.MATERIAL_FEATURE) {
             a.put(handle.clazz(), handle);
         }
         MF_CLASS2MFH = ImmutableMap.copyOf(a);
@@ -92,8 +94,8 @@ public class System$Material {
 
         Map<Material, Map<MaterialItemType, ItemStack>> c = new HashMap<>();
         for (Pair<Pair<ResourceLocation, ResourceLocation>, Supplier<ItemStack>> i : M_MIT2I_PRE) {
-            Material m = Registry$Material.MATERIAL.get(i.getFirst().getFirst());
-            MaterialItemType t = Registry$Material.MATERIAL_ITEM_TYPE.get(i.getFirst().getSecond());
+            Material m = Registries.MATERIAL.get(i.getFirst().getFirst());
+            MaterialItemType t = Registries.MATERIAL_ITEM_TYPE.get(i.getFirst().getSecond());
             ItemStack s = i.getSecond().get();
 
             if (m == null || t == null) {
@@ -125,20 +127,20 @@ public class System$Material {
         release = true;
     }
 
-    static void initTexture(TextureAtlas atlas) {
-        TextureAtlasSprite missing = atlas.missingSprite;
-
-        Map<Material, TextureAtlasSprite> d = new HashMap<>();
-        TextureAtlasSprite sprite;
-        for (Material material : Registry$Material.MATERIAL) {
-            sprite = atlas.getSprite(material.id.withPath(id -> "brea/material/" + id));
-            if (sprite.equals(missing)) {
-                sprite = atlas.getSprite(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "brea/material/missing"));
-            }
-            d.put(material, sprite);
-        }
-        M2TEXTURE = ImmutableMap.copyOf(d);
-    }
+//    static void initTexture(TextureAtlas atlas) {
+//        TextureAtlasSprite missing = atlas.missingSprite;
+//
+//        Map<Material, TextureAtlasSprite> d = new HashMap<>();
+//        TextureAtlasSprite sprite;
+//        for (Material material : Registries.MATERIAL) {
+//            sprite = atlas.getSprite(material.id.withPath(id -> "brea/material/" + id));
+//            if (sprite.equals(missing)) {
+//                sprite = atlas.getSprite(ResourceLocation.fromNamespaceAndPath(BreaMaterials.MODID, "brea/material/missing"));
+//            }
+//            d.put(material, sprite);
+//        }
+//        M2TEXTURE = ImmutableMap.copyOf(d);
+//    }
 
 
     //---[模型id获取 Model id provider]---
@@ -163,13 +165,13 @@ public class System$Material {
     public static final UnaryOperator<ResourceLocation> MIT_BASIC_MODEL_LOCATION = location -> location.withPrefix("mit_basic/");
 
 
-    public static ResourceLocation combineForAtlasID(Material material, MaterialItemType type) {
-        return ResourceLocation.fromNamespaceAndPath("brea_" + material.id.getNamespace() + "_" + type.id.getNamespace(), material.id.getPath() + "_" + type.id.getPath());
-    }
-
-    public static ResourceLocation idpForAtlasID(int x16color, MaterialItemType type) {
-        return type.id.withPrefix("breaidp_" + Integer.toHexString(x16color) + "_");
-    }
+//    public static ResourceLocation combineForAtlasID(Material material, MaterialItemType type) {
+//        return ResourceLocation.fromNamespaceAndPath("brea_" + material.id.getNamespace() + "_" + type.id.getNamespace(), material.id.getPath() + "_" + type.id.getPath());
+//    }
+//
+//    public static ResourceLocation idpForAtlasID(int x16color, MaterialItemType type) {
+//        return type.id.withPrefix("breaidp_" + Integer.toHexString(x16color) + "_");
+//    }
 
     //---[覆盖信息访问 Overridden info accessor]---
 
@@ -192,7 +194,7 @@ public class System$Material {
             LOGGER.warn("M_MIT2I map has not present so the result may lead to some unexpected error.");
         }
         if (itemStack == null) {
-            if(!material.getOrCreateTypes().contains(type)) return null;
+            if(!material.toTypes.contains(type)) return null;
             itemStack = material.createItem(type);
             if (itemStack == null) {
                 return type.createItem(material);

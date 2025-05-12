@@ -5,7 +5,7 @@ import com.phasetranscrystal.material.helper.SpriteHelper;
 import com.phasetranscrystal.material.BreaMaterials;
 import com.phasetranscrystal.material.system.material.Material;
 import com.phasetranscrystal.material.system.material.MaterialItemType;
-import com.phasetranscrystal.material.system.material.Registry$Material;
+import com.phasetranscrystal.material.Registries;
 import com.mojang.blaze3d.platform.NativeImage;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.client.Minecraft;
@@ -88,7 +88,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
 
                     IntOpenHashSet colors = new IntOpenHashSet();
 
-                    for (Material material : Registry$Material.MATERIAL) {
+                    for (Material material : Registries.MATERIAL) {
                         if(material.intermediateProduct){
                             colors.add(material.x16color);
                         };
@@ -106,7 +106,7 @@ public class MaterialAtlasManager extends TextureAtlasHolder {
 //                        contents.add(mat);
 
 
-                        for (MaterialItemType type : (material.equals(BreaRegistries.MaterialReg.MISSING.get())) ? Registry$Material.MATERIAL_ITEM_TYPE : material.getOrCreateTypes()) {
+                        for (MaterialItemType type : (material.equals(BreaRegistries.MaterialReg.MISSING.get())) ? Registries.MATERIAL_ITEM_TYPE : material.getOrCreateTypes()) {
                             //创建物品类型alpha通道缓存
                             if (!alphaCache.containsKey(type)) {
                                 ResourceLocation location = type.id.withPath(s -> "textures/breamaterial/material/mit/" + s + ".png");

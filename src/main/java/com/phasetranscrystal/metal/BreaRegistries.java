@@ -1,15 +1,14 @@
 package com.phasetranscrystal.metal;
 
 import com.google.common.collect.ImmutableSet;
-import com.phasetranscrystal.metal.module.registry.ItemRegroup;
-import com.phasetranscrystal.metal.system.material.*;
-import com.phasetranscrystal.metal.system.material.expansion.CombustibleType;
-import com.phasetranscrystal.metal.system.material.expansion.IngotType;
-import com.phasetranscrystal.metal.system.material.expansion.materialfeature.CombustibleMF;
-import com.phasetranscrystal.metal.system.material.expansion.materialfeature.MetalMF;
-import com.phasetranscrystal.metal.system.material.expansion.materialfeature.PhaseTransitMF;
-import com.phasetranscrystal.metal.system.material.expansion.materialfeature.ThermoMF;
-import com.phasetranscrystal.metal.system.material.Material;
+import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
+import com.phasetranscrystal.metal.expansion.CombustibleType;
+import com.phasetranscrystal.metal.expansion.IngotType;
+import com.phasetranscrystal.metal.expansion.materialfeature.CombustibleMF;
+import com.phasetranscrystal.metal.expansion.materialfeature.MetalMF;
+import com.phasetranscrystal.metal.expansion.materialfeature.PhaseTransitMF;
+import com.phasetranscrystal.metal.expansion.materialfeature.ThermoMF;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -35,7 +34,6 @@ public class BreaRegistries {
             output.accept((DeferredItem<Item>) i);
         }
     }).title(Component.translatable("tab.brea.default")).icon(() -> new ItemStack(Items.COMMAND_BLOCK)).build());
-    public static final ItemRegroup<Item> PLACEHOLDER = BreaMetal.REGISTER.item("placeholder").addExplainPre().texture().build();
 
 
     /**

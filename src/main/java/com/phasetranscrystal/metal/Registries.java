@@ -1,8 +1,7 @@
 package com.phasetranscrystal.metal;
 
-import com.phasetranscrystal.metal.system.material.Material;
-import com.phasetranscrystal.metal.system.material.MaterialFeatureType;
-import com.phasetranscrystal.metal.system.material.MaterialItemType;
+import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

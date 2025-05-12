@@ -1,35 +1,20 @@
 package com.phasetranscrystal.metal;
 
-import com.phasetranscrystal.metal.module.registry.RegroupController;
-import com.phasetranscrystal.metal.system.material.datagen.MitModelGen;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
 @Mod(BreaMetal.MODID)
 public class BreaMetal
 {
-    public static RegroupController REGISTER;
     public static final String MODID = "brea_metal";
 
 
     public BreaMetal(IEventBus modEventBus, ModContainer modContainer) throws IOException {
-        REGISTER = RegroupController.create(modEventBus,MODID,((event, regroupController) -> {
-            PackOutput output = event.getGenerator().getPackOutput();
-            ExistingFileHelper fileHelper = event.getExistingFileHelper();
-            CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
-
-            regroupController.itemModelProvider.addAgency(new MitModelGen(output,fileHelper));
-//            regroupController.spriteProvider.addAgency(new MaterialSpriteAttachGen(output,lookup,fileHelper));
-        }));
         ModDataComponents.register(modEventBus);
         BreaRegistries.ITEM.register(modEventBus);
         BreaRegistries.TAB.register(modEventBus);

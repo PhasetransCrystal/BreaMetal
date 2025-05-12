@@ -1,4 +1,4 @@
-package com.phasetranscrystal.metal.system.material;
+package com.phasetranscrystal.metal.material;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;

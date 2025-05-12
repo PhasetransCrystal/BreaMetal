@@ -1,9 +1,9 @@
-package com.phasetranscrystal.metal.system.material.expansion;
+package com.phasetranscrystal.metal.material.expansion;
 
 import com.phasetranscrystal.metal.BreaMetal;
 import com.phasetranscrystal.metal.BreaRegistries;
-import com.phasetranscrystal.metal.system.material.Material;
-import com.phasetranscrystal.metal.system.material.TypedMaterialItem;
+import com.phasetranscrystal.metal.material.Material;
+import com.phasetranscrystal.metal.material.TypedMaterialItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 

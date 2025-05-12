@@ -1,9 +1,9 @@
-package com.phasetranscrystal.metal.system.material.expansion;
+package com.phasetranscrystal.metal.material.expansion;
 
 import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.metal.BreaMetal;
-import com.phasetranscrystal.metal.system.material.Material;
-import com.phasetranscrystal.metal.system.material.MaterialItemType;
+import com.phasetranscrystal.metal.material.Material;
+import com.phasetranscrystal.metal.material.MaterialItemType;
 import com.phasetranscrystal.metal.Registries;
 import net.minecraft.resources.ResourceLocation;
 

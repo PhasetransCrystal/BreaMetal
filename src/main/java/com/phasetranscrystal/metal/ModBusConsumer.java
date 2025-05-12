@@ -2,9 +2,8 @@ package com.phasetranscrystal.metal;
 
 
 import com.google.common.base.Suppliers;
-import com.phasetranscrystal.metal.system.material.Material;
-import com.phasetranscrystal.metal.system.material.MaterialItemType;
-import com.phasetranscrystal.metal.system.material.event.ModifyMaterialFeatureEvent;
+import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
+import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;

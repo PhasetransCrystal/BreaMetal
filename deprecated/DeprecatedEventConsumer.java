@@ -1,4 +1,4 @@
-package com.phasetranscrystal.metal.system.material;
+package com.phasetranscrystal.metal.material;
 
 import com.phasetranscrystal.metal.BreaMetal;
 import com.phasetranscrystal.metal.BreaRegistries;

@@ -5,48 +5,66 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CompoundClientDatagen {
     public final String modid;
     public final GatherDataEvent event;
-    private final LinkedHashMap<Class<?>,DataProvider> datagenMap;
+    private final HashMap<Class<?>, DataProvider> datagenMap;
+    private final List<Function<DataProvider, Boolean>> highPriorityFilter;
 
-    public CompoundClientDatagen(GatherDataEvent event, String modid){
+    public CompoundClientDatagen(GatherDataEvent event, String modid) {
         this.event = event;
         this.modid = modid;
-        this.datagenMap = new LinkedHashMap<>();
+        this.datagenMap = new HashMap<>();
+        this.highPriorityFilter = new ArrayList<>();
     }
 
-    public CompoundClientDatagen build(GatherDataEvent event) {
+    public void build() {
         BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(modid))
                 .filter(item -> item instanceof ITypedMaterialObj)
                 .forEach(item -> {
                     ITypedMaterialObj obj = (ITypedMaterialObj) item;
-                    obj.getMIType().ifPresent(mit -> mit.gatherKeyForDatagen(this, event,obj.getMaterial().orElse(null),BuiltInRegistries.ITEM.getKey(item)));
+                    obj.getMIType().ifPresent(mit -> mit.gatherKeyForDatagen(this, event, obj.getMaterial().orElse(null), BuiltInRegistries.ITEM.getKey(item)));
                 });
 
-        Stream<DataProvider> dataProviderStream = datagenMap.values().stream().filter(dp -> dp instanceof TextureMixProvider);
-        dataProviderStream.forEach(p -> event.getGenerator().addProvider(true,p));
-        dataProviderStream.map(dp -> datagenMap.re)
-        datagenMap.values().forEach(p -> event.getGenerator().addProvider(true,p));
-        return this;
+
+        if (!highPriorityFilter.isEmpty()) {
+            // 将过滤条件合并为一个组合谓词
+            Predicate<DataProvider> isHighPriority = provider -> highPriorityFilter.stream().anyMatch(filter -> filter.apply(provider));
+
+            // 使用流分割数据提供者
+            Map<Boolean, List<DataProvider>> partitioned = datagenMap.values().stream().collect(Collectors.partitioningBy(isHighPriority));
+
+            // 按优先级顺序添加（先高后低）
+            Stream.concat(
+                    partitioned.get(true).stream(),
+                    partitioned.get(false).stream()
+            ).forEach(provider -> event.getGenerator().addProvider(true, provider));
+        } else
+            datagenMap.values().forEach(provider -> event.getGenerator().addProvider(true, provider));
     }
 
-    public <T extends DataProvider> T getDataProvider(Class<T> type, Function<CompoundClientDatagen,T> supplier){
-        return (T) datagenMap.putIfAbsent(type,supplier.apply(this));
+    public <T extends DataProvider> T getDataProvider(Class<T> type, Function<CompoundClientDatagen, T> supplier) {
+        return (T) datagenMap.putIfAbsent(type, supplier.apply(this));
     }
 
-    public ConsumerItemModelGen getItemModelGen(){
-        return getDataProvider(ConsumerItemModelGen.class,v -> new ConsumerItemModelGen(event,modid));
+    public void addHighPriorityFilter(Function<DataProvider, Boolean> filter) {
+        highPriorityFilter.add(filter);
     }
 
-    public TextureAlphaFilterProvider getAlphaFilterProvider(){
-        return getDataProvider(TextureAlphaFilterProvider.class,v -> new TextureAlphaFilterProvider(event));
+    public ConsumerItemModelGen getItemModelGen() {
+        return getDataProvider(ConsumerItemModelGen.class, v -> new ConsumerItemModelGen(event, modid));
+    }
+
+    public TextureAlphaFilterProvider getAlphaFilterProvider() {
+        this.highPriorityFilter.add(p -> p instanceof TextureMixProvider);
+        return getDataProvider(TextureAlphaFilterProvider.class, v -> new TextureAlphaFilterProvider(event));
     }
 }

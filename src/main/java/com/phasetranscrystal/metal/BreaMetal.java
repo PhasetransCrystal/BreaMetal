@@ -1,10 +1,15 @@
 package com.phasetranscrystal.metal;
 
+import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
+import com.phasetranscrystal.metal.mitemtype.TypedMaterialInfo;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
 
@@ -51,13 +56,16 @@ public class BreaMetal
 //        );
     }
 
-    private static ItemModelGenerator ITEM_MODELGEN;
 
-    public static ItemModelGenerator getItemModelgen() {
-        if (ITEM_MODELGEN == null) {
-            ITEM_MODELGEN = new ItemModelGenerator();
-        }
-        return ITEM_MODELGEN;
+
+    @Nullable
+    public static ITypedMaterialObj getMaterialInfo(Item target){
+        return target instanceof ITypedMaterialObj obj ? obj : ModBusConsumer.getMaterialItemNegativeExpandMap().get(target);
+    }
+
+    @Nullable
+    public static Item getMaterialItem(ITypedMaterialObj obj){
+        return ModBusConsumer.getMaterialItemPositiveMap().get(obj);
     }
 
 }

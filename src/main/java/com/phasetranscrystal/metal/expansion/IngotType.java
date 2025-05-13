@@ -35,14 +35,6 @@ public class IngotType extends MaterialItemType {
     }
 
     @Override
-    public void gatherKeyForDatagen(ConsumerItemModelGen ins) {
-        super.gatherKeyForDatagen(ins);
-//        for (ResourceLocation id : WITH_RESOURCE.keySet()) {
-//            ins.basicItem(id);
-//        }
-    }
-
-    @Override
     public void attachToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         super.attachToCreativeTab(event);
 //        for (IngotItem item : WITH_RESOURCE.values()) {

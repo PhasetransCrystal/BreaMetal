@@ -1,5 +1,6 @@
 package com.phasetranscrystal.metal;
 
+import com.phasetranscrystal.metal.datagen.CompoundClientDatagen;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -13,8 +14,7 @@ public class DatagenRegistries {
         generateForMod(event, BreaMetal.MODID);
     }
 
-    //TODO
     public static void generateForMod(GatherDataEvent event, String modid){
-
+        new CompoundClientDatagen(event, modid).build();
     }
 }

@@ -12,11 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+@Deprecated
 public class TextureGen {
-
-
-
-
     public static final int IMAGE_XY = 16;
     public static void textureMix(ResourceLocation sourceTexture, Color argb, ResourceLocation outTexture) throws IOException {
         BufferedImage image = textureFileLoad(convertToFilePath(sourceTexture));

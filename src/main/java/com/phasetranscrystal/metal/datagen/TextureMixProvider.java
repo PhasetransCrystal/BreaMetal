@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class TextureMixProvider implements DataProvider {
+
     public final PackOutput output;
     public final ExistingFileHelper existingFileHelper;
     public final CompletableFuture<HolderLookup.Provider> lookupProvider;
@@ -71,7 +72,8 @@ public abstract class TextureMixProvider implements DataProvider {
                 // 保存输出
                 Path outputPath = this.output.getOutputFolder()
                         .resolve(combo.getOutputPath().getNamespace())
-                        .resolve("textures/" + combo.getOutputPath().getPath() + ".png");
+                        .resolve("textures")
+                        .resolve(combo.getOutputPath().getPath() + ".png");
                 saveImage(output, outputImage, "PNG", outputPath);
             } catch (IOException e) {
                 throw new RuntimeException("Unable to generate texture: " + combo.getOutputPath(), e);

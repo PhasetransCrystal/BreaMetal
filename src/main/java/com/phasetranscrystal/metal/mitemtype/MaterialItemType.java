@@ -73,7 +73,7 @@ public class MaterialItemType {
 
         String texturePath = defaultTextureKey(material, itemLocation);
 
-        datagen.getAlphaFilterProvider().addCombination(this, material, itemLocation);
+        datagen.getAlphaFilterProvider().addCombination(this, material, ResourceLocation.parse(texturePath));
 
         datagen.getItemModelGen().addConsumer(g -> g.getBuilder(itemLocation.toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
@@ -82,11 +82,10 @@ public class MaterialItemType {
     }
 
     public String defaultTextureKey(Material material, ResourceLocation itemLocation) {
-        return BreaMetal.MODID + ":common/" + getLocation().getNamespace() + "_" + getLocation().getPath() + "/" +
+        return BreaMetal.MODID + ":item/mi_common/" + getLocation().getNamespace() + "_" + getLocation().getPath() + "/" +
                 material.getLocation().getNamespace() + "_" + material.getLocation().getPath();
     }
 
-    ;
 
     //将物品添加至创造模式物品栏
     public void attachToCreativeTab(BuildCreativeModeTabContentsEvent event) {

@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class PhaseTransitMF implements IMaterialFeature<PhaseTransitMF> {
     public static final Codec<PhaseTransitMF> CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -23,7 +24,7 @@ public class PhaseTransitMF implements IMaterialFeature<PhaseTransitMF> {
     }
 
     @Override
-    public MaterialFeatureType<PhaseTransitMF> getType() {
-        return BreaMetalRegistries.PHASE_TRANSIT.get();
+    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<PhaseTransitMF>> getTypeHolder() {
+        return BreaMetalRegistries.PHASE_TRANSIT;
     }
 }

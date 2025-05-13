@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class MetalMF implements IMaterialFeature<MetalMF> {
     public static final Codec<MetalMF> CODEC = Codec.unit(MetalMF::new);
@@ -11,7 +12,7 @@ public class MetalMF implements IMaterialFeature<MetalMF> {
     public MetalMF(){}
 
     @Override
-    public MaterialFeatureType<MetalMF> getType() {
-        return BreaMetalRegistries.METAL.get();
+    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<MetalMF>> getTypeHolder() {
+        return BreaMetalRegistries.METAL;
     }
 }

@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +14,7 @@ public class ThermoMF implements IMaterialFeature<ThermoMF> {
     public static final Codec<ThermoMF> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.FLOAT.fieldOf("c").forGetter(o -> o.c),
             Codec.FLOAT.fieldOf("k").forGetter(o -> o.k)
-    ).apply(i,ThermoMF::new));
+    ).apply(i, ThermoMF::new));
 
     /**
      * <table border="1">
@@ -66,9 +67,9 @@ public class ThermoMF implements IMaterialFeature<ThermoMF> {
     public final float k;
 
     public ThermoMF(float ic, float ik, float density) {
-        if(ic <= 0 | ik < 0){
-            LOGGER.error("The C must be over 0 and the K must not be lower than 0. Currently, they're {} and {}",ic,ik);
-            LOGGER.error("比热容必须高于0而热导率必须不低于0。而它们现在的数值为{}和{}",ic,ik);
+        if (ic <= 0 | ik < 0) {
+            LOGGER.error("The C must be over 0 and the K must not be lower than 0. Currently, they're {} and {}", ic, ik);
+            LOGGER.error("比热容必须高于0而热导率必须不低于0。而它们现在的数值为{}和{}", ic, ik);
             throw new IllegalArgumentException("The C or K value isn't correct.");
         }
         this.c = ic * density * 1000;
@@ -81,8 +82,8 @@ public class ThermoMF implements IMaterialFeature<ThermoMF> {
     }
 
     @Override
-    public MaterialFeatureType<ThermoMF> getType() {
-        return BreaMetalRegistries.THERMO.get();
+    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<ThermoMF>> getTypeHolder() {
+        return BreaMetalRegistries.THERMO;
     }
 
 }

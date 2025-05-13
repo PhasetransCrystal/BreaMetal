@@ -32,7 +32,7 @@ public class BreaMetalRegistries {
     private static final DeferredRegister<MaterialFeatureType<?>> FEATURE = DeferredRegister.create(NewRegistries.MATERIAL_FEATURE, BreaMetal.MODID);
     private static final DeferredRegister<Material> MATERIAL = DeferredRegister.create(NewRegistries.MATERIAL, BreaMetal.MODID);
 
-    public static void bootstrap(IEventBus bus){
+    public static void bootstrap(IEventBus bus) {
         ITEM.register(bus);
         TAB.register(bus);
         INGREDIENT_TYPE.register(bus);
@@ -45,13 +45,13 @@ public class BreaMetalRegistries {
             CreativeModeTab.builder().title(Component.translatable("tab.brea.metal.default")).icon(() -> new ItemStack(Items.COMMAND_BLOCK)).build()
     );
 
-    public static final DeferredHolder<MaterialItemType, IngotType> INGOT = TYPE.register("ingot", () -> new IngotType(90));
+    public static final DeferredHolder<MaterialItemType, IngotType> INGOT = TYPE.register("ingot", r -> new IngotType(r, 90));
     public static final DeferredHolder<MaterialItemType, CombustibleType> COMBUSTIBLE_TYPE = TYPE.register("combustible", CombustibleType::new);
 
-    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<PhaseTransitMF>> PHASE_TRANSIT = FEATURE.register("phase_transit", () -> new MaterialFeatureType<>(PhaseTransitMF.CODEC, PhaseTransitMF.class));//TODO 添加气态与液态支持
-    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<ThermoMF>> THERMO = FEATURE.register("thermo", () -> new MaterialFeatureType<>(ThermoMF.CODEC, ThermoMF.class));
-    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<MetalMF>> METAL = FEATURE.register("metal", () -> new MaterialFeatureType<>(MetalMF.CODEC, MetalMF.class, ImmutableSet.of(BreaMetalRegistries.INGOT.get()), BreaMetalRegistries.PHASE_TRANSIT.getId(), BreaMetalRegistries.THERMO.getId()));
-    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<CombustibleMF>> COMBUSTIBLE = FEATURE.register("combustible", () -> new MaterialFeatureType<>(CombustibleMF.CODEC, CombustibleMF.class, BreaMetalRegistries.COMBUSTIBLE_TYPE.get()));
+    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<PhaseTransitMF>> PHASE_TRANSIT = FEATURE.register("phase_transit", r -> new MaterialFeatureType<>(r, PhaseTransitMF.CODEC, PhaseTransitMF.class));//TODO 添加气态与液态支持
+    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<ThermoMF>> THERMO = FEATURE.register("thermo", r -> new MaterialFeatureType<>(r, ThermoMF.CODEC, ThermoMF.class));
+    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<MetalMF>> METAL = FEATURE.register("metal", r -> new MaterialFeatureType<>(r, MetalMF.CODEC, MetalMF.class, ImmutableSet.of(BreaMetalRegistries.INGOT), BreaMetalRegistries.PHASE_TRANSIT.getId(), BreaMetalRegistries.THERMO.getId()));
+    public static final DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<CombustibleMF>> COMBUSTIBLE = FEATURE.register("combustible", r -> new MaterialFeatureType<>(r, CombustibleMF.CODEC, CombustibleMF.class, BreaMetalRegistries.COMBUSTIBLE_TYPE));
 
     public static final DeferredHolder<Material, Material> IRON = MATERIAL.register("iron", r -> new Material(r, new MetalMF(), new PhaseTransitMF(1539, 3000), new ThermoMF(0.46F, 80.9F, 7.87F)));
     public static final DeferredHolder<Material, Material> LIGNITE = MATERIAL.register("lignite", r -> new Material(r, new CombustibleMF(18000, 1150)));

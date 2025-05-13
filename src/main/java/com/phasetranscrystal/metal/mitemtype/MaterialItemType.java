@@ -1,9 +1,6 @@
 package com.phasetranscrystal.metal.mitemtype;
 
-import com.phasetranscrystal.metal.BreaMetal;
-import com.phasetranscrystal.metal.Material;
-import com.phasetranscrystal.metal.ModBusConsumer;
-import com.phasetranscrystal.metal.NewRegistries;
+import com.phasetranscrystal.metal.*;
 import com.phasetranscrystal.metal.datagen.CompoundClientDatagen;
 import com.phasetranscrystal.metal.expansion.IngotType;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
@@ -37,9 +34,11 @@ public class MaterialItemType {
     public final long content;
     public final float purity;
 
-    public MaterialItemType(long content, float purity) {
+    public MaterialItemType(ResourceLocation idCache,long content, float purity) {
         this.content = content;
         this.purity = purity;
+
+        RegistrationShortCircuit.MIT.put(idCache, this);
     }
 
     /**

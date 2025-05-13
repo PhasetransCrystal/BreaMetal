@@ -2,8 +2,11 @@ package com.phasetranscrystal.metal.mfeature;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
+import com.phasetranscrystal.metal.BreaMetal;
+import com.phasetranscrystal.metal.RegistrationShortCircuit;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import com.phasetranscrystal.metal.NewRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -18,11 +21,22 @@ import java.util.Arrays;
  */
 //特征类型的编解码器，类对象，衍生材料物品类型，依赖的其它特征类型
 //虽然说这个codec目前还没啥用 先放着吧）
-public record MaterialFeatureType<I extends IMaterialFeature<I>>(Codec<I> codec, Class<I> clazz,
-                                                                 ImmutableSet<? extends MaterialItemType> types,
-                                                                 ResourceLocation... dependencies) {
-    public MaterialFeatureType(Codec<I> codec, Class<I> clazz, MaterialItemType... types) {
-        this(codec, clazz, ImmutableSet.copyOf(types));
+public class MaterialFeatureType<I extends IMaterialFeature<I>> {
+    public final Codec<I> codec;
+    public final Class<I> clazz;
+    public final ImmutableSet<? extends MaterialItemType> types;
+    public final ImmutableSet<ResourceLocation> dependencies;
+
+    public MaterialFeatureType(ResourceLocation idCache , Codec<I> codec, Class<I> clazz, ImmutableSet<Holder<MaterialItemType>> types, ResourceLocation... dependencies){
+        this.codec = codec;
+        this.clazz = clazz;
+        this.types = types.stream().map(RegistrationShortCircuit::getMaterialItemType).collect(ImmutableSet.toImmutableSet());
+        this.dependencies = ImmutableSet.copyOf(dependencies);
+        RegistrationShortCircuit.FEATURES.put(idCache, this);
+    }
+
+    public MaterialFeatureType(ResourceLocation idCache ,Codec<I> codec, Class<I> clazz, Holder<MaterialItemType>... types) {
+        this(idCache,codec, clazz, ImmutableSet.copyOf(types));
     }
 
     public ResourceKey<MaterialFeatureType<?>> getResourceKey() {
@@ -35,6 +49,10 @@ public record MaterialFeatureType<I extends IMaterialFeature<I>>(Codec<I> codec,
 
     @Override
     public String toString() {
-        return "BreaMetal-MaterialFeatureType{key=" + getResourceKey() + ", types=" + types + ", dependencies=" + Arrays.toString(dependencies) + "}";
+        return "BreaMetal-MaterialFeatureType{key=" + getResourceKey() + ", types=" + types + ", dependencies=" + dependencies + "}";
+    }
+
+    public ImmutableSet<? extends MaterialItemType> types() {
+        return types;
     }
 }

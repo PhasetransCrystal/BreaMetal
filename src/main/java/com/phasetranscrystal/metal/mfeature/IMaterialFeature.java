@@ -5,6 +5,8 @@ import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import com.phasetranscrystal.metal.expansion.materialfeature.MetalMF;
 import com.phasetranscrystal.metal.expansion.materialfeature.PhaseTransitMF;
 import com.phasetranscrystal.metal.expansion.materialfeature.ThermoMF;
+import net.minecraft.core.Holder;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**IMaterialFeature材料特征接口(MF)<br><p>
  * <font color="red">警告：此接口的实例在被创建后其内容不应被以任何形式进行任何更改，这有可能导致出现不可预料的严重问题。<br>
@@ -16,7 +18,6 @@ import com.phasetranscrystal.metal.expansion.materialfeature.ThermoMF;
  * 同时，材料被允许存在的{@link MaterialItemType 物品类型(MIT)}也在其中被指定。
  * @see PhaseTransitMF PhaseTransitMF实现，这里存储材料的相变温度
  * @see ThermoMF ThermoMF实现，这用于处理材料的热力学属性，例如导热，比热等
- * @see com.landis.breakdowncore.system.thermodynamics.IThermoMatBackground 作为对上方ThermoMF的补充，IThermoMatBackground展示了如何获取MF中的信息
  * @see MetalMF MetalMF实现，展示了MF的标志作用与物品类型(MIT)许可作用
  * @see Material 继续阅览。查看有关Material的详细信息
  * */
@@ -27,5 +28,9 @@ public interface IMaterialFeature<I extends IMaterialFeature<I>> {
     default I getInstance(){return (I) this;}
 
     /**返回一个注册了的材料特征类型*/
-    MaterialFeatureType<I> getType();
+    default MaterialFeatureType<I> getType(){
+        return getTypeHolder().get();
+    };
+
+    DeferredHolder<MaterialFeatureType<?>,MaterialFeatureType<I>> getTypeHolder();
 }

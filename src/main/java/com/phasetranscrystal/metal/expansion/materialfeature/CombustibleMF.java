@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class CombustibleMF implements IMaterialFeature<CombustibleMF> {
     public static final Codec<CombustibleMF> CODEC = Codec.withAlternative(Codec.LONG.xmap(CombustibleMF::new, i -> i.q), RecordCodecBuilder.create(instance -> instance.group(
@@ -57,7 +58,7 @@ public class CombustibleMF implements IMaterialFeature<CombustibleMF> {
     }
 
     @Override
-    public MaterialFeatureType<CombustibleMF> getType() {
-        return BreaMetalRegistries.COMBUSTIBLE.get();
+    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<CombustibleMF>> getTypeHolder() {
+        return BreaMetalRegistries.COMBUSTIBLE;
     }
 }

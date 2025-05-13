@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * 的材质。另外，材料系统可以将该种材料指定为中间产物(isIntermediateProduct)，这样它将不会尝试拉取材料材质，而是仅使用MIT的材质，并使用设定的颜色(x16color)进行着色。<br>
  * 注意：我们建议您在使用后一种方法时<font color="yellow">尽量使用少种类的颜色</font>，因为同种颜色动态生成的材质会被统一编入并调用，更多的颜色意味着更多的材质，更多的内存负担。
  *
- * @see BreaMetalRegistries.MaterialReg 在Registries中查看系统的注册方法
  */
 public class Material {
     public static final Logger LOGGER = LogManager.getLogger("BreaMetal:Material");
@@ -36,22 +35,25 @@ public class Material {
     public final ImmutableSet<MaterialItemType> toTypes;//材料具有的所有物品类型
 
     public Material(ResourceLocation materialId, int x16color, IMaterialFeature<?>... fIns) {
+
+        RegistrationShortCircuit.MATERIAL.put(materialId, this);
+
         //材料标准颜色
         this.x16color = x16color;
 
         //材料特性收集
         HashMap<MaterialFeatureType<?>, IMaterialFeature<?>> features = new HashMap<>();
         for (IMaterialFeature<?> feature : fIns) {
-            features.put(feature.getType(), feature);
+            features.put(RegistrationShortCircuit.getFeatureType(feature), feature);
         }
-        ModBusConsumer.materialModifyCache.featureAttach.get(materialId).forEach(feature -> features.put(feature.getType(), feature));
+        ModBusConsumer.materialModifyCache.featureAttach.get(materialId).forEach(feature -> features.put(RegistrationShortCircuit.getFeatureType(feature), feature));
         ModBusConsumer.materialModifyCache.featureRemove.get(materialId).forEach(features::remove);
 
         //材料依赖判定
         List<MaterialFeatureType<?>> typeExceptions = new ArrayList<>();
         Set<ResourceLocation> typeExceptionRequire = new HashSet<>();
         // 初始化 existingIds 为所有类型的 ID 集合（仅生成一次）
-        Set<ResourceLocation> existingIds = features.keySet().stream().map(MaterialFeatureType::getLocation).collect(Collectors.toSet());
+        Set<ResourceLocation> existingIds = features.keySet().stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).collect(Collectors.toSet());
 
         boolean hasMissingDependencies;
         do {
@@ -60,7 +62,7 @@ public class Material {
 
             // 检查每个类型的依赖
             for (MaterialFeatureType<?> type : features.keySet()) {
-                for (ResourceLocation dependency : type.dependencies()) {
+                for (ResourceLocation dependency : type.dependencies) {
                     if (!existingIds.contains(dependency)) {
                         toRemove.add(type);
                         hasMissingDependencies = true;
@@ -72,7 +74,7 @@ public class Material {
             // 更新 existingIds 并移除无效类型
             if (!toRemove.isEmpty()) {
                 // 从 existingIds 中移除即将删除的类型的 ID
-                toRemove.stream().map(MaterialFeatureType::getLocation).forEach(existingIds::remove);
+                toRemove.stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).forEach(existingIds::remove);
                 toRemove.forEach(features::remove);
                 typeExceptions.addAll(toRemove);
             }
@@ -80,7 +82,7 @@ public class Material {
 
         //如果存在依赖错误的情况 报错输出
         if(!typeExceptions.isEmpty()){
-            typeExceptions.stream().map(MaterialFeatureType::getLocation).forEach(typeExceptionRequire::remove);
+            typeExceptions.stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).forEach(typeExceptionRequire::remove);
             LOGGER.warn("Material({}) removed features({}) with not existed dependencies. Required: {}", materialId, typeExceptions.toArray(), typeExceptionRequire);
         }
 

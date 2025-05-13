@@ -21,10 +21,14 @@ public class TypedMaterialItem extends Item implements ITypedMaterialObj {
     public final MaterialItemType type;
     public final Material material;
 
-    public TypedMaterialItem(MaterialItemType type, Material material) {
-        super(new Properties().fireResistant());
+    public TypedMaterialItem(Properties properties ,MaterialItemType type, Material material) {
+        super(properties);
         this.type = type;
         this.material = material;
+    }
+
+    public TypedMaterialItem(MaterialItemType type, Material material) {
+        this(new Properties(), type, material);
     }
 
     @Override

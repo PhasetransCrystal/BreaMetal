@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * 的材质。另外，材料系统可以将该种材料指定为中间产物(isIntermediateProduct)，这样它将不会尝试拉取材料材质，而是仅使用MIT的材质，并使用设定的颜色(x16color)进行着色。<br>
  * 注意：我们建议您在使用后一种方法时<font color="yellow">尽量使用少种类的颜色</font>，因为同种颜色动态生成的材质会被统一编入并调用，更多的颜色意味着更多的材质，更多的内存负担。
  *
- * @see BreaRegistries.MaterialReg 在Registries中查看系统的注册方法
+ * @see BreaMetalRegistries.MaterialReg 在Registries中查看系统的注册方法
  */
 public class Material {
     public static final Logger LOGGER = LogManager.getLogger("BreaMetal:Material");
@@ -109,17 +109,8 @@ public class Material {
         return toTypes.contains(type);
     }
 
-    //TODO
-    //当返回值为null时，将会继续尝试使用对应的ItemType获取结果。
-    public @Nullable ItemStack createItem(MaterialItemType type) {
-//        if (getOrCreateTypes().contains(type)) {
-//            return null;
-//        }
-        return new ItemStack(Items.AIR);
-    }
-
     public ResourceKey<Material> getResourceKey() {
-        return Registries.MATERIAL.getResourceKey(this).get();
+        return NewRegistries.MATERIAL.getResourceKey(this).get();
     }
 
     public ResourceLocation getLocation() {

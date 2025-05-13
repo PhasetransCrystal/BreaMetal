@@ -3,7 +3,7 @@ package com.phasetranscrystal.metal.mfeature;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
-import com.phasetranscrystal.metal.Registries;
+import com.phasetranscrystal.metal.NewRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -26,7 +26,7 @@ public record MaterialFeatureType<I extends IMaterialFeature<I>>(Codec<I> codec,
     }
 
     public ResourceKey<MaterialFeatureType<?>> getResourceKey() {
-        return Registries.MATERIAL_FEATURE.getResourceKey(this).get();
+        return NewRegistries.MATERIAL_FEATURE.getResourceKey(this).get();
     }
 
     public ResourceLocation getLocation() {

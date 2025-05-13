@@ -1,5 +1,6 @@
 package com.phasetranscrystal.metal.datagen;
 
+import com.phasetranscrystal.metal.BreaMetal;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataProvider;
@@ -13,10 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CompoundClientDatagen {
+    public static final Predicate<DataProvider> TEXTUREGEN_PREDICATE = p -> p instanceof TextureMixProvider;
     public final String modid;
     public final GatherDataEvent event;
     private final HashMap<Class<?>, DataProvider> datagenMap;
-    private final List<Function<DataProvider, Boolean>> highPriorityFilter;
+    private final List<Predicate<DataProvider>> highPriorityFilter;
 
     public CompoundClientDatagen(GatherDataEvent event, String modid) {
         this.event = event;
@@ -28,16 +30,16 @@ public class CompoundClientDatagen {
     public void build() {
         BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(modid))
-                .filter(item -> item instanceof ITypedMaterialObj)
+                .filter(BreaMetal::haveMaterialInfo)
                 .forEach(item -> {
-                    ITypedMaterialObj obj = (ITypedMaterialObj) item;
+                    ITypedMaterialObj obj = BreaMetal.getMaterialInfo(item);
                     obj.getMIType().ifPresent(mit -> mit.gatherKeyForDatagen(this, event, obj.getMaterial().orElse(null), BuiltInRegistries.ITEM.getKey(item)));
                 });
 
 
         if (!highPriorityFilter.isEmpty()) {
             // 将过滤条件合并为一个组合谓词
-            Predicate<DataProvider> isHighPriority = provider -> highPriorityFilter.stream().anyMatch(filter -> filter.apply(provider));
+            Predicate<DataProvider> isHighPriority = provider -> highPriorityFilter.stream().anyMatch(filter -> filter.test(provider));
 
             // 使用流分割数据提供者
             Map<Boolean, List<DataProvider>> partitioned = datagenMap.values().stream().collect(Collectors.partitioningBy(isHighPriority));
@@ -55,7 +57,7 @@ public class CompoundClientDatagen {
         return (T) datagenMap.putIfAbsent(type, supplier.apply(this));
     }
 
-    public void addHighPriorityFilter(Function<DataProvider, Boolean> filter) {
+    public void addHighPriorityFilter(Predicate<DataProvider> filter) {
         highPriorityFilter.add(filter);
     }
 
@@ -64,7 +66,7 @@ public class CompoundClientDatagen {
     }
 
     public TextureAlphaFilterProvider getAlphaFilterProvider() {
-        this.highPriorityFilter.add(p -> p instanceof TextureMixProvider);
+        this.highPriorityFilter.add(TEXTUREGEN_PREDICATE);
         return getDataProvider(TextureAlphaFilterProvider.class, v -> new TextureAlphaFilterProvider(event));
     }
 }

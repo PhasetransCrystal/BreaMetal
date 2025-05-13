@@ -2,20 +2,20 @@ package com.phasetranscrystal.metal.mitemtype;
 
 import com.phasetranscrystal.metal.BreaMetal;
 import com.phasetranscrystal.metal.Material;
-import com.phasetranscrystal.metal.Registries;
+import com.phasetranscrystal.metal.ModBusConsumer;
+import com.phasetranscrystal.metal.NewRegistries;
 import com.phasetranscrystal.metal.datagen.CompoundClientDatagen;
-import com.phasetranscrystal.metal.datagen.ConsumerItemModelGen;
 import com.phasetranscrystal.metal.expansion.IngotType;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * MaterialItemType材料物品类型(MIT)<br><p>
@@ -33,8 +33,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @see IngotType IngotType中有关于一些预备方法的特别使用方法
  * @see MaterialFeatureType 继续浏览。查看MaterialFeatureType的详细信息
  */
-
-//TODO
 public class MaterialItemType {
     public final long content;
     public final float purity;
@@ -45,26 +43,18 @@ public class MaterialItemType {
     }
 
     /**
-     * WARN:<br>
-     * 如果您设置了自定义的全局注册或材料特性接口，您可能需要覆写此方法来保证获取的正确运行。
-     */
-    public @NonNull ItemStack createItem(Material material) {
-//        ItemStack stack = getHolder();
-//        StringTag tag = StringTag.valueOf(material.id.toString());
-//        //TODO 啊---
-//        stack.set(ModDataComponents.MATERIALS,material.id.toString());//.putString("material", material.id.toString());
-//        return stack;
-        return ItemStack.EMPTY;
-    }
-
-
-    /**
      * 注册<br>
      * 这一阶段，每一种拥有该物品类型的材料将会相应的调用一次此方法，以此来实现根据特殊材料进行额外的注册。<br>
      * 这一过程您可能需要相应的配置自定义的物品材料特征映射表。
      */
-    public void secondaryRegistry(@Nullable RegisterEvent event, Material material) {
-
+    public void registryBootstrap(Material material) {
+        Registry<Item> registry = BuiltInRegistries.REGISTRY.get((ResourceKey) net.minecraft.core.registries.Registries.ITEM);
+        Item item = new TypedMaterialItem(this, material);
+        Registry.register(registry,
+                getLocation().withPrefix(material.getLocation().getNamespace() + "_" + material.getLocation().getPath() + "_"),
+                item
+        );
+        ModBusConsumer.addCreativeTabStack(new ItemStack(item));
     }
 
     //收集数据生成信息，用于自动生成模型
@@ -86,17 +76,8 @@ public class MaterialItemType {
                 material.getLocation().getNamespace() + "_" + material.getLocation().getPath();
     }
 
-
-    //将物品添加至创造模式物品栏
-    public void attachToCreativeTab(BuildCreativeModeTabContentsEvent event) {
-//        ItemStack i = new ItemStack(BuiltInRegistries.ITEM.get(autoRegKey.location()));
-//        ((ITypedMaterialObj) i.getItem()).setMaterial(i);
-//        event.accept(i);
-    }
-
-
     public ResourceKey<MaterialItemType> getResourceKey() {
-        return Registries.MATERIAL_ITEM_TYPE.getResourceKey(this).get();
+        return NewRegistries.MATERIAL_ITEM_TYPE.getResourceKey(this).get();
     }
 
     public ResourceLocation getLocation() {

@@ -9,7 +9,7 @@ public class ImageHelper {
 //    public static BufferedImage firstFrame(SpriteContents contents){
 //        BufferedImage image = new BufferedImage(contents.width(),contents.height(),false);
 //        boolean animate = contents.animatedTexture != null;
-//        //TODO 可能生效的修改
+//
 //        contents.originalImage.copyRect(image, 0, 0,0,0,contents.width(),contents.height(),false,false);
 //        return image;
 //    }

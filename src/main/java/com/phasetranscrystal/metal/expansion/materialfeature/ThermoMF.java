@@ -2,14 +2,14 @@ package com.phasetranscrystal.metal.expansion.materialfeature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phasetranscrystal.metal.BreaRegistries;
+import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ThermoMF implements IMaterialFeature<ThermoMF> {
-    public static final Logger LOGGER = LogManager.getLogger("BreaMetal:MaterialFeature:ThermoMF");
+    public static final Logger LOGGER = LogManager.getLogger("BreaMetal:MaterialFeature/ThermoMF");
     public static final Codec<ThermoMF> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.FLOAT.fieldOf("c").forGetter(o -> o.c),
             Codec.FLOAT.fieldOf("k").forGetter(o -> o.k)
@@ -82,7 +82,7 @@ public class ThermoMF implements IMaterialFeature<ThermoMF> {
 
     @Override
     public MaterialFeatureType<ThermoMF> getType() {
-        return BreaRegistries.MaterialReg.THERMO.get();
+        return BreaMetalRegistries.THERMO.get();
     }
 
 }

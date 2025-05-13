@@ -2,7 +2,7 @@ package com.phasetranscrystal.metal.expansion.materialfeature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phasetranscrystal.metal.BreaRegistries;
+import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 
@@ -24,6 +24,6 @@ public class PhaseTransitMF implements IMaterialFeature<PhaseTransitMF> {
 
     @Override
     public MaterialFeatureType<PhaseTransitMF> getType() {
-        return BreaRegistries.MaterialReg.PHASE_TRANSIT.get();
+        return BreaMetalRegistries.PHASE_TRANSIT.get();
     }
 }

@@ -1,6 +1,6 @@
 package com.phasetranscrystal.metal.mitemtype;
 
-import com.phasetranscrystal.metal.Registries;
+import com.phasetranscrystal.metal.NewRegistries;
 import com.phasetranscrystal.metal.Material;
 import net.minecraft.resources.ResourceLocation;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 public record TypedMaterialInfo(Material material, MaterialItemType mit) implements ITypedMaterialObj{
 
     public TypedMaterialInfo(ResourceLocation material, ResourceLocation mit){
-        this(Registries.MATERIAL.get(material), Registries.MATERIAL_ITEM_TYPE.get(mit));
+        this(NewRegistries.MATERIAL.get(material), NewRegistries.MATERIAL_ITEM_TYPE.get(mit));
     }
 
     @Override

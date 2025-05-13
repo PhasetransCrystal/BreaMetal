@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/BreaMaterials.main.iml" filepath="$PROJECT_DIR$/.idea/modules/BreaMaterials.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/BreaMaterials.test.iml" filepath="$PROJECT_DIR$/.idea/modules/BreaMaterials.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BreaMetal.main.iml" filepath="$PROJECT_DIR$/.idea/modules/BreaMetal.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BreaMetal.test.iml" filepath="$PROJECT_DIR$/.idea/modules/BreaMetal.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.phasetranscrystal.metal.BreaMaterials.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.phasetranscrystal.metal.BreaMaterials.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.phasetranscrystal.metal.BreaMaterials.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.phasetranscrystal.metal.BreaMaterials.test.iml" />
     </modules>

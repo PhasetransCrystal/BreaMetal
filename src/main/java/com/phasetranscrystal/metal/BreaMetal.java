@@ -1,11 +1,8 @@
 package com.phasetranscrystal.metal;
 
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
-import com.phasetranscrystal.metal.mitemtype.TypedMaterialInfo;
-import net.minecraft.client.renderer.block.model.ItemModelGenerator;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -21,13 +18,7 @@ public class BreaMetal
 
     public BreaMetal(IEventBus modEventBus, ModContainer modContainer) throws IOException {
         ModDataComponents.register(modEventBus);
-        BreaRegistries.ITEM.register(modEventBus);
-        BreaRegistries.TAB.register(modEventBus);
-        BreaRegistries.INGREDIENT_TYPE.register(modEventBus);
-        BreaRegistries.MaterialReg.MATERIAL.register(modEventBus);
-        BreaRegistries.MaterialReg.FEATURE.register(modEventBus);
-        BreaRegistries.MaterialReg.TYPE.register(modEventBus);
-        BreaRegistries.JsonCodecReg.LOOT_POOL.register(modEventBus);
+        BreaMetalRegistries.bootstrap(modEventBus);
         //TODO
 //        TextureGen.textureMix(
 //                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/combustible.png"),
@@ -61,6 +52,10 @@ public class BreaMetal
     @Nullable
     public static ITypedMaterialObj getMaterialInfo(Item target){
         return target instanceof ITypedMaterialObj obj ? obj : ModBusConsumer.getMaterialItemNegativeExpandMap().get(target);
+    }
+
+    public static boolean haveMaterialInfo(Item target){
+        return target instanceof ITypedMaterialObj || ModBusConsumer.getMaterialItemNegativeExpandMap().get(target) != null;
     }
 
     @Nullable

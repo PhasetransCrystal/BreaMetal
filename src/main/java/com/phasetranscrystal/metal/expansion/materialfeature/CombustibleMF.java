@@ -2,7 +2,7 @@ package com.phasetranscrystal.metal.expansion.materialfeature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.phasetranscrystal.metal.BreaRegistries;
+import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 
@@ -58,6 +58,6 @@ public class CombustibleMF implements IMaterialFeature<CombustibleMF> {
 
     @Override
     public MaterialFeatureType<CombustibleMF> getType() {
-        return BreaRegistries.MaterialReg.COMBUSTIBLE.get();
+        return BreaMetalRegistries.COMBUSTIBLE.get();
     }
 }

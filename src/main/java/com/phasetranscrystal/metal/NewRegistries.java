@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Registries {
+public class NewRegistries {
     public static final Logger LOGGER = LogManager.getLogger("BREA:Material:Registry");
 
     public static final Registry<MaterialItemType> MATERIAL_ITEM_TYPE = new RegistryBuilder<>(Keys.MATERIAL_ITEM_TYPE).sync(true).create();

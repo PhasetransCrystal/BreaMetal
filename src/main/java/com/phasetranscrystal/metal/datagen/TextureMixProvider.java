@@ -1,9 +1,6 @@
 package com.phasetranscrystal.metal.datagen;
 
 import com.google.common.hash.Hashing;
-import com.phasetranscrystal.metal.BreaMetal;
-import com.phasetranscrystal.metal.Material;
-import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -13,6 +10,8 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class TextureMixProvider implements DataProvider {
+    public static final Logger LOGGER = LogManager.getLogger("BreaMetal-Datagen:TextureMix");
 
     public final PackOutput output;
     public final ExistingFileHelper existingFileHelper;
@@ -76,7 +76,7 @@ public abstract class TextureMixProvider implements DataProvider {
                         .resolve(combo.getOutputPath().getPath() + ".png");
                 saveImage(output, outputImage, "PNG", outputPath);
             } catch (IOException e) {
-                throw new RuntimeException("Unable to generate texture: " + combo.getOutputPath(), e);
+                LOGGER.warn("Unable to generate texture: {}", combo.getOutputPath(), e);
             }
         });
     }

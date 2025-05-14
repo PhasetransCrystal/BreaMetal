@@ -1,5 +1,7 @@
 package com.phasetranscrystal.metal.helper;
 
+import net.minecraft.util.FastColor;
+
 import java.awt.image.BufferedImage;
 
 //在NativeImage中的RGBA颜色，所有你能看到的，不管是获取到的还是要设置的
@@ -58,7 +60,7 @@ public class ImageHelper {
 //    }
 
     public static BufferedImage colorCombineHandle(BufferedImage a, BufferedImage b, Color.ColorHandle handle) {
-        BufferedImage copied = new BufferedImage(a.getWidth(), a.getHeight(), a.getType());
+        BufferedImage copied = new BufferedImage(a.getWidth(), a.getHeight(), BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < a.getWidth(); x++) {
             for (int y = 0; y < a.getHeight(); y++) {
                 int color = a.getRGB(x, y);
@@ -98,7 +100,7 @@ public class ImageHelper {
         }
 
         public static int alphaFilter(int original, int alpha) {
-            alpha = Math.min((getColorByte(alpha, 3) + getColorByte(alpha, 2) + getColorByte(alpha, 1)) / 3, getColorByte(alpha, 0));
+            alpha = FastColor.ARGB32.alpha(alpha);
             return original & 0x00FFFFFF | alpha << 24;
         }
 

@@ -98,7 +98,6 @@ public abstract class TextureMixProvider implements DataProvider {
         output.writeIfNeeded(path, data, Hashing.sha256().hashBytes(data)); // 使用缓存校验
     }
 
-    // 修改后的 execute 方法签名示例（需自行实现）
     public abstract BufferedImage execute(BufferedImage[] images);
 
     public abstract boolean adjustTextureProvider(RootTextureProvider provider);

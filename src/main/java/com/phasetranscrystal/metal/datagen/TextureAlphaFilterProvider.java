@@ -38,7 +38,7 @@ public class TextureAlphaFilterProvider extends TextureMixProvider {
                     image0.getWidth() + "x" + image0.getHeight() + " , " + image1.getWidth() + "x" + image1.getHeight() +
                     (image2 == null ? "" : ", " + image2.getWidth() + "x" + image2.getHeight()) + "]");
 
-        BufferedImage outImage = ImageHelper.alphaFilter(image0, image1);
+        BufferedImage outImage = ImageHelper.alphaFilter(image1, image0);
         if (image2 != null) {
             outImage = ImageHelper.blend(outImage, image2);
         }

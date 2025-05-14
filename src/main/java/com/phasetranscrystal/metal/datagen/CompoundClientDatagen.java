@@ -69,4 +69,9 @@ public class CompoundClientDatagen {
         this.highPriorityFilter.add(TEXTUREGEN_PREDICATE);
         return getDataProvider(TextureAlphaFilterProvider.class, v -> new TextureAlphaFilterProvider(event));
     }
+
+    public TextureMultiplyMixProvider getMultiplyMixProvider() {
+        this.highPriorityFilter.add(TEXTUREGEN_PREDICATE);
+        return getDataProvider(TextureMultiplyMixProvider.class, v -> new TextureMultiplyMixProvider(event));
+    }
 }

@@ -6,6 +6,7 @@ import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class IngotType extends MaterialItemType {
 
@@ -16,7 +17,7 @@ public class IngotType extends MaterialItemType {
         super(location, 90, purity);
     }
 
-    //TODO for test only
+    @VisibleForTesting
     @Override
     public void registryBootstrap(Material material) {
         if (!material.equals(BreaMetalRegistries.IRON.get())) {

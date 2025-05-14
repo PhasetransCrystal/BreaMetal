@@ -60,7 +60,9 @@ public class MaterialItemType {
 
         String texturePath = defaultTextureKey(material, itemLocation);
 
-        datagen.getAlphaFilterProvider().addCombination(this, material, ResourceLocation.parse(texturePath));
+        //TODO 美工 加油）
+//        datagen.getAlphaFilterProvider().addCombination(this, material, ResourceLocation.parse(texturePath));
+        datagen.getMultiplyMixProvider().addCombination(this, material, ResourceLocation.parse(texturePath));
 
         datagen.getItemModelGen().addConsumer(g -> g.getBuilder(itemLocation.toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))

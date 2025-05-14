@@ -23,7 +23,7 @@ public class TextureAlphaFilterProvider extends TextureMixProvider {
     }
 
     public void addCombination(MaterialItemType pathMIT, Material pathMaterial, ResourceLocation pathOutput) {
-        this.combinations.add(new TextureAlphaFilterCombination(pathMIT,pathMaterial,pathOutput));
+        this.combinations.add(new Combination(pathMIT,pathMaterial,pathOutput));
     }
 
     @Override
@@ -57,14 +57,14 @@ public class TextureAlphaFilterProvider extends TextureMixProvider {
         return "Texture Mix - Multiply";
     }
 
-    public record TextureAlphaFilterCombination(
+    public record Combination(
             ResourceLocation pathAlpha,
             ResourceLocation pathTexture,
             ResourceLocation pathCover,
             ResourceLocation pathOutput
     ) implements RootTextureProvider {
 
-        public TextureAlphaFilterCombination(MaterialItemType pathMIT, Material pathMaterial, ResourceLocation pathOutput) {
+        public Combination(MaterialItemType pathMIT, Material pathMaterial, ResourceLocation pathOutput) {
             this(
                     ResourceLocation.fromNamespaceAndPath(BreaMetal.MODID, "template/mit/" + pathMIT.getLocation().getNamespace() + "/" + pathMIT.getLocation().getPath()),
                     ResourceLocation.fromNamespaceAndPath(BreaMetal.MODID, "template/material/" + pathMaterial.getLocation().getNamespace() + "/" + pathMaterial.getLocation().getPath()),

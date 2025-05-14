@@ -19,32 +19,6 @@ public class BreaMetal
     public BreaMetal(IEventBus modEventBus, ModContainer modContainer) throws IOException {
         ModDataComponents.register(modEventBus);
         BreaMetalRegistries.bootstrap(modEventBus);
-        //TODO
-//        TextureGen.textureMix(
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/combustible.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/missing.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/combustible.png")
-//        );
-//        TextureGen.textureMix(
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/ingot.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/missing.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/ingot.png")
-//        );
-//        TextureGen.textureMix(
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/ingothot.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/missing.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/ingothot.png")
-//        );
-//        TextureGen.textureMix(
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/turbine.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/missing.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/turbine.png")
-//        );
-//        TextureGen.textureMix(
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/mit/wrench.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/missing.png"),
-//                ResourceLocation.fromNamespaceAndPath("breamaterial","material/material/wrench.png")
-//        );
     }
 
 

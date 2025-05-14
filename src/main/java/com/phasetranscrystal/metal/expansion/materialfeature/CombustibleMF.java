@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import com.phasetranscrystal.metal.registry.ShortCircuitHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class CombustibleMF implements IMaterialFeature<CombustibleMF> {
@@ -58,7 +59,7 @@ public class CombustibleMF implements IMaterialFeature<CombustibleMF> {
     }
 
     @Override
-    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<CombustibleMF>> getTypeHolder() {
+    public ShortCircuitHolder<MaterialFeatureType<?>, MaterialFeatureType<CombustibleMF>> getTypeHolder() {
         return BreaMetalRegistries.COMBUSTIBLE;
     }
 }

@@ -3,6 +3,7 @@ package com.phasetranscrystal.metal.mitemtype;
 import com.phasetranscrystal.metal.*;
 import com.phasetranscrystal.metal.datagen.CompoundClientDatagen;
 import com.phasetranscrystal.metal.expansion.IngotType;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 /**
  * MaterialItemType材料物品类型(MIT)<br><p>
@@ -37,8 +37,6 @@ public class MaterialItemType {
     public MaterialItemType(ResourceLocation idCache,long content, float purity) {
         this.content = content;
         this.purity = purity;
-
-        RegistrationShortCircuit.MIT.put(idCache, this);
     }
 
     /**

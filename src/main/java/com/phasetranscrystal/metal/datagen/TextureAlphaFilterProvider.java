@@ -1,13 +1,12 @@
 package com.phasetranscrystal.metal.datagen;
 
 import com.phasetranscrystal.metal.BreaMetal;
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.helper.ImageHelper;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 

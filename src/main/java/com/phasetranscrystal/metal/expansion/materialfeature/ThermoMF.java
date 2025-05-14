@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import com.phasetranscrystal.metal.registry.ShortCircuitHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +83,7 @@ public class ThermoMF implements IMaterialFeature<ThermoMF> {
     }
 
     @Override
-    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<ThermoMF>> getTypeHolder() {
+    public ShortCircuitHolder<MaterialFeatureType<?>, MaterialFeatureType<ThermoMF>> getTypeHolder() {
         return BreaMetalRegistries.THERMO;
     }
 

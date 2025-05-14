@@ -1,11 +1,11 @@
 package com.phasetranscrystal.metal.mfeature;
 
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import com.phasetranscrystal.metal.expansion.materialfeature.MetalMF;
 import com.phasetranscrystal.metal.expansion.materialfeature.PhaseTransitMF;
 import com.phasetranscrystal.metal.expansion.materialfeature.ThermoMF;
-import net.minecraft.core.Holder;
+import com.phasetranscrystal.metal.registry.ShortCircuitHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**IMaterialFeature材料特征接口(MF)<br><p>
@@ -32,5 +32,5 @@ public interface IMaterialFeature<I extends IMaterialFeature<I>> {
         return getTypeHolder().get();
     };
 
-    DeferredHolder<MaterialFeatureType<?>,MaterialFeatureType<I>> getTypeHolder();
+    ShortCircuitHolder<MaterialFeatureType<?>,MaterialFeatureType<I>> getTypeHolder();
 }

@@ -1,6 +1,6 @@
 package com.phasetranscrystal.metal.mitemtype;
 
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 
 import java.util.Optional;
 

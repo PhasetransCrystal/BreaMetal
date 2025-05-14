@@ -1,7 +1,7 @@
 package com.phasetranscrystal.metal.mitemtype;
 
 import com.phasetranscrystal.metal.NewRegistries;
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;

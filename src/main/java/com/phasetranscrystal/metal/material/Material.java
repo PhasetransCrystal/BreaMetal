@@ -1,14 +1,15 @@
-package com.phasetranscrystal.metal;
+package com.phasetranscrystal.metal.material;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.phasetranscrystal.metal.ModBusConsumer;
+import com.phasetranscrystal.metal.NewRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
+import com.phasetranscrystal.metal.registry.ShortCircuitRegMap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,7 +26,6 @@ import java.util.stream.Collectors;
  * [NameSpace]/textures/brea/material/material/[Path].png<br>
  * 的材质。另外，材料系统可以将该种材料指定为中间产物(isIntermediateProduct)，这样它将不会尝试拉取材料材质，而是仅使用MIT的材质，并使用设定的颜色(x16color)进行着色。<br>
  * 注意：我们建议您在使用后一种方法时<font color="yellow">尽量使用少种类的颜色</font>，因为同种颜色动态生成的材质会被统一编入并调用，更多的颜色意味着更多的材质，更多的内存负担。
- *
  */
 public class Material {
     public static final Logger LOGGER = LogManager.getLogger("BreaMetal:Material");
@@ -35,25 +35,22 @@ public class Material {
     public final ImmutableSet<MaterialItemType> toTypes;//材料具有的所有物品类型
 
     public Material(ResourceLocation materialId, int x16color, IMaterialFeature<?>... fIns) {
-
-        RegistrationShortCircuit.MATERIAL.put(materialId, this);
-
         //材料标准颜色
         this.x16color = x16color;
 
         //材料特性收集
         HashMap<MaterialFeatureType<?>, IMaterialFeature<?>> features = new HashMap<>();
         for (IMaterialFeature<?> feature : fIns) {
-            features.put(RegistrationShortCircuit.getFeatureType(feature), feature);
+            features.put(feature.getType(), feature);
         }
-        ModBusConsumer.materialModifyCache.featureAttach.get(materialId).forEach(feature -> features.put(RegistrationShortCircuit.getFeatureType(feature), feature));
+        ModBusConsumer.materialModifyCache.featureAttach.get(materialId).forEach(feature -> features.put(feature.getType(), feature));
         ModBusConsumer.materialModifyCache.featureRemove.get(materialId).forEach(features::remove);
 
         //材料依赖判定
         List<MaterialFeatureType<?>> typeExceptions = new ArrayList<>();
         Set<ResourceLocation> typeExceptionRequire = new HashSet<>();
         // 初始化 existingIds 为所有类型的 ID 集合（仅生成一次）
-        Set<ResourceLocation> existingIds = features.keySet().stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).collect(Collectors.toSet());
+        Set<ResourceLocation> existingIds = features.keySet().stream().map(type -> ShortCircuitRegMap.get(NewRegistries.Keys.MATERIAL_FEATURE, type)).collect(Collectors.toSet());
 
         boolean hasMissingDependencies;
         do {
@@ -74,15 +71,15 @@ public class Material {
             // 更新 existingIds 并移除无效类型
             if (!toRemove.isEmpty()) {
                 // 从 existingIds 中移除即将删除的类型的 ID
-                toRemove.stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).forEach(existingIds::remove);
+                toRemove.stream().map(type -> ShortCircuitRegMap.get(NewRegistries.Keys.MATERIAL_FEATURE, type)).forEach(existingIds::remove);
                 toRemove.forEach(features::remove);
                 typeExceptions.addAll(toRemove);
             }
         } while (hasMissingDependencies);
 
         //如果存在依赖错误的情况 报错输出
-        if(!typeExceptions.isEmpty()){
-            typeExceptions.stream().map(type -> RegistrationShortCircuit.FEATURES.inverse().get(type)).forEach(typeExceptionRequire::remove);
+        if (!typeExceptions.isEmpty()) {
+            typeExceptions.stream().map(type -> ShortCircuitRegMap.get(NewRegistries.Keys.MATERIAL_FEATURE, type)).forEach(typeExceptionRequire::remove);
             LOGGER.warn("Material({}) removed features({}) with not existed dependencies. Required: {}", materialId, typeExceptions.toArray(), typeExceptionRequire);
         }
 
@@ -96,8 +93,11 @@ public class Material {
         this(materialId, 0xEBEEF0, fIns);
     }
 
-    /**获取某种材料特性的实例
-     * @return 该特性的实例。当材料不具有该特性时，返回内容为空。*/
+    /**
+     * 获取某种材料特性的实例
+     *
+     * @return 该特性的实例。当材料不具有该特性时，返回内容为空。
+     */
     @Nullable
     public <I extends IMaterialFeature<I>> IMaterialFeature<I> getFeature(MaterialFeatureType<I> handle) {
         return (IMaterialFeature<I>) toFeature.get(handle);
@@ -119,7 +119,7 @@ public class Material {
         return getResourceKey().location();
     }
 
-    public String getTranslateKey(){
+    public String getTranslateKey() {
         return "brea.metal.material." + getLocation().toLanguageKey();
     }
 

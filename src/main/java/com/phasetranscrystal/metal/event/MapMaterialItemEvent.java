@@ -1,6 +1,6 @@
 package com.phasetranscrystal.metal.event;
 
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import com.phasetranscrystal.metal.mitemtype.TypedMaterialInfo;
 import net.minecraft.world.item.Item;
@@ -9,7 +9,6 @@ import net.neoforged.fml.event.IModBusEvent;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**

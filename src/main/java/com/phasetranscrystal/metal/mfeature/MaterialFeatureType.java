@@ -2,15 +2,12 @@ package com.phasetranscrystal.metal.mfeature;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import com.phasetranscrystal.metal.BreaMetal;
-import com.phasetranscrystal.metal.RegistrationShortCircuit;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import com.phasetranscrystal.metal.NewRegistries;
+import com.phasetranscrystal.metal.registry.ShortCircuitHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Arrays;
 
 /**
  * MaterialFeatureType材料特征类型<br><p>
@@ -27,16 +24,15 @@ public class MaterialFeatureType<I extends IMaterialFeature<I>> {
     public final ImmutableSet<? extends MaterialItemType> types;
     public final ImmutableSet<ResourceLocation> dependencies;
 
-    public MaterialFeatureType(ResourceLocation idCache , Codec<I> codec, Class<I> clazz, ImmutableSet<Holder<MaterialItemType>> types, ResourceLocation... dependencies){
+    public MaterialFeatureType(ResourceLocation idCache, Codec<I> codec, Class<I> clazz, ImmutableSet<ShortCircuitHolder<MaterialItemType, ? extends MaterialItemType>> types, ResourceLocation... dependencies) {
         this.codec = codec;
         this.clazz = clazz;
-        this.types = types.stream().map(RegistrationShortCircuit::getMaterialItemType).collect(ImmutableSet.toImmutableSet());
+        this.types = types.stream().map(ShortCircuitHolder::value).collect(ImmutableSet.toImmutableSet());
         this.dependencies = ImmutableSet.copyOf(dependencies);
-        RegistrationShortCircuit.FEATURES.put(idCache, this);
     }
 
-    public MaterialFeatureType(ResourceLocation idCache ,Codec<I> codec, Class<I> clazz, Holder<MaterialItemType>... types) {
-        this(idCache,codec, clazz, ImmutableSet.copyOf(types));
+    public MaterialFeatureType(ResourceLocation idCache, Codec<I> codec, Class<I> clazz, ShortCircuitHolder<MaterialItemType, ? extends MaterialItemType>... types) {
+        this(idCache, codec, clazz, ImmutableSet.copyOf(types));
     }
 
     public ResourceKey<MaterialFeatureType<?>> getResourceKey() {

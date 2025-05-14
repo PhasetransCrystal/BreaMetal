@@ -1,7 +1,7 @@
 package com.phasetranscrystal.metal.expansion;
 
 import com.phasetranscrystal.metal.BreaMetalRegistries;
-import com.phasetranscrystal.metal.Material;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;

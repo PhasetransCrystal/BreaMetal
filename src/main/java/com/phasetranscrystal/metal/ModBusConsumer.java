@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.metal.event.MapMaterialItemEvent;
 import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
 import net.minecraft.core.registries.BuiltInRegistries;

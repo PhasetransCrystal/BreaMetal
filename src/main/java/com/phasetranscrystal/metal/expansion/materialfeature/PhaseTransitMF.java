@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.phasetranscrystal.metal.BreaMetalRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
 import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
+import com.phasetranscrystal.metal.registry.ShortCircuitHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class PhaseTransitMF implements IMaterialFeature<PhaseTransitMF> {
@@ -24,7 +25,7 @@ public class PhaseTransitMF implements IMaterialFeature<PhaseTransitMF> {
     }
 
     @Override
-    public DeferredHolder<MaterialFeatureType<?>, MaterialFeatureType<PhaseTransitMF>> getTypeHolder() {
+    public ShortCircuitHolder<MaterialFeatureType<?>, MaterialFeatureType<PhaseTransitMF>> getTypeHolder() {
         return BreaMetalRegistries.PHASE_TRANSIT;
     }
 }

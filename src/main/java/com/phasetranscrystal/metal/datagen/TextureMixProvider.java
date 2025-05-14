@@ -71,6 +71,7 @@ public abstract class TextureMixProvider implements DataProvider {
 
                 // 保存输出
                 Path outputPath = this.output.getOutputFolder()
+                        .resolve("assets")
                         .resolve(combo.getOutputPath().getNamespace())
                         .resolve("textures")
                         .resolve(combo.getOutputPath().getPath() + ".png");

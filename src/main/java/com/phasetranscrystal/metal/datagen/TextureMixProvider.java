@@ -75,8 +75,8 @@ public abstract class TextureMixProvider implements DataProvider {
                         .resolve("textures")
                         .resolve(combo.getOutputPath().getPath() + ".png");
                 saveImage(output, outputImage, "PNG", outputPath);
-            } catch (IOException e) {
-                LOGGER.warn("Unable to generate texture: {}", combo.getOutputPath(), e);
+            } catch (Exception e) {
+                LOGGER.warn("Unable to generate texture: {}", combo, e);
             }
         });
     }

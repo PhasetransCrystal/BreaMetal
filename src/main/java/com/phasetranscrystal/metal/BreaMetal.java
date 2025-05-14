@@ -1,6 +1,5 @@
 package com.phasetranscrystal.metal;
 
-import com.phasetranscrystal.metal.mfeature.MaterialFeatureType;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
 
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,6 @@ import net.neoforged.fml.common.Mod;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Mod(BreaMetal.MODID)
 public class BreaMetal
@@ -53,16 +51,20 @@ public class BreaMetal
 
     @Nullable
     public static ITypedMaterialObj getMaterialInfo(Item target){
-        return target instanceof ITypedMaterialObj obj ? obj : ModBusConsumer.getMaterialItemNegativeExpandMap().get(target);
+        return ModBusConsumer.getMaterialItemMap().inverse().get(target);
     }
 
     public static boolean haveMaterialInfo(Item target){
-        return target instanceof ITypedMaterialObj || ModBusConsumer.getMaterialItemNegativeExpandMap().get(target) != null;
+        return ModBusConsumer.getMaterialItemMap().inverse().get(target) != null;
+    }
+
+    public static boolean isTexturegenBlacklist(ResourceLocation rl){
+        return ModBusConsumer.texturgenBlacklist.contains(rl);
     }
 
     @Nullable
     public static Item getMaterialItem(ITypedMaterialObj obj){
-        return ModBusConsumer.getMaterialItemPositiveMap().get(obj);
+        return ModBusConsumer.getMaterialItemMap().get(obj);
     }
 
 }

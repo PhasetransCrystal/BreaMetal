@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "brea_metal:item/mi_common/brea_metal_combustible/brea_metal_lignite"
+  }
+}

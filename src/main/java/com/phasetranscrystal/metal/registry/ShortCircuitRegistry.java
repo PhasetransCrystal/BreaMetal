@@ -22,7 +22,8 @@ public class ShortCircuitRegistry<T> extends DeferredRegister<T> {
 
     @Override
     public <I extends T> ShortCircuitHolder<T, I> register(String name, Function<ResourceLocation, ? extends I> func) {
-        cache = ShortCircuitRegMap.buildSupplier(this.getRegistryKey(), ResourceLocation.fromNamespaceAndPath(this.getNamespace(), name), func);
+        var cache = ShortCircuitRegMap.buildSupplier(this.getRegistryKey(), ResourceLocation.fromNamespaceAndPath(this.getNamespace(), name), func);
+        this.cache = cache;
         return (ShortCircuitHolder<T, I>) super.register(name, rl -> (I) cache.get());
     }
 

@@ -34,7 +34,7 @@ public class MaterialItemType {
     public final long content;
     public final float purity;
 
-    public MaterialItemType(ResourceLocation idCache,long content, float purity) {
+    public MaterialItemType(ResourceLocation idCache, long content, float purity) {
         this.content = content;
         this.purity = purity;
     }
@@ -56,7 +56,7 @@ public class MaterialItemType {
 
     //收集数据生成信息，用于自动生成模型
     public void gatherKeyForDatagen(CompoundClientDatagen datagen, GatherDataEvent event, Material material, ResourceLocation itemLocation) {
-        if (material == null) return;
+        if (material == null || BreaMetal.isTexturegenBlacklist(itemLocation)) return;
 
         String texturePath = defaultTextureKey(material, itemLocation);
 

@@ -54,7 +54,7 @@ public class CompoundClientDatagen {
     }
 
     public <T extends DataProvider> T getDataProvider(Class<T> type, Function<CompoundClientDatagen, T> supplier) {
-        return (T) datagenMap.putIfAbsent(type, supplier.apply(this));
+        return (T) datagenMap.computeIfAbsent(type, c -> supplier.apply(this));
     }
 
     public void addHighPriorityFilter(Predicate<DataProvider> filter) {

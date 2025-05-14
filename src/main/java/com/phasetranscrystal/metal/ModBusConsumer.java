@@ -2,7 +2,8 @@ package com.phasetranscrystal.metal;
 
 
 import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.metal.event.MapMaterialItemEvent;
 import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
@@ -18,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.GameData;
@@ -37,9 +39,8 @@ public class ModBusConsumer {
     public static ModifyMaterialFeatureEvent materialModifyCache;
     public static final List<ItemStack> creativeTabAutoAttachList = new ArrayList<>();
 
-    private static ImmutableMap<ITypedMaterialObj, Item> materialItemPositiveMap;
-    private static ImmutableMap<Item, ITypedMaterialObj> materialItemNegativeExpandMap;
-    private static ImmutableSet<Item> texturgenBlacklist = ImmutableSet.of();
+    private static BiMap<ITypedMaterialObj, Item> materialItemMap;
+    protected static ImmutableSet<ResourceLocation> texturgenBlacklist = ImmutableSet.of();
 
     @SubscribeEvent
     public static void newRegistry(NewRegistryEvent event) {
@@ -48,23 +49,25 @@ public class ModBusConsumer {
         event.register(NewRegistries.MATERIAL);
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void modifyMaterialFeature(RegisterEvent event) {
+        if (!event.getRegistryKey().location().getNamespace().equals("minecraft") && materialModifyCache == null) {
+            materialModifyCache = new ModifyMaterialFeatureEvent();
+            ModLoader.postEvent(materialModifyCache);
+        }
+    }
+
     /**
      * 在最后一种注册的最低优先级执行 等效于所有注册完成但注册表尚未冻结
      *
      * @see GameData#postRegisterEvents()
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void registryEventConsumer(RegisterEvent event) {
-        //在完成MF注册后 发布材料特性修饰处理事件
-        if (event.getRegistryKey().equals(NewRegistries.Keys.MATERIAL_FEATURE)) {
-            materialModifyCache = new ModifyMaterialFeatureEvent();
-            ModLoader.postEvent(materialModifyCache);
-        }
-
+    public static void materialItemAutoRegistry(RegisterEvent event) {
         if (event.getRegistryKey().location().equals(LAST_REGISTRY_TYPE.get())) {
             for (Material material : NewRegistries.MATERIAL) {
                 for (MaterialItemType type : material.toTypes) {
-                    type.registryBootstrap( material);
+                    type.registryBootstrap(material);
                 }
             }
         }
@@ -88,6 +91,15 @@ public class ModBusConsumer {
 
     @SubscribeEvent
     public static void buildItemReflect(FMLCommonSetupEvent event) {
+        generateMaterialItemMap();
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void buildItemReflectDatagen(GatherDataEvent event) {
+        generateMaterialItemMap();
+    }
+
+    private static void generateMaterialItemMap() {
         MapMaterialItemEvent mapMaterialItemEvent = new MapMaterialItemEvent();
         ModLoader.postEvent(mapMaterialItemEvent);
 
@@ -95,30 +107,21 @@ public class ModBusConsumer {
             texturgenBlacklist = ImmutableSet.copyOf(mapMaterialItemEvent.texturegenBlacklist);
         }
 
-        ImmutableMap.Builder<ITypedMaterialObj, Item> positiveBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<Item, ITypedMaterialObj> negativeExpandBuilder = ImmutableMap.builder();
+        ImmutableBiMap.Builder<ITypedMaterialObj, Item> builder = ImmutableBiMap.builder();
 
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof ITypedMaterialObj obj) {
-                positiveBuilder.put(obj, item);
+                builder.put(obj, item);
             }
         }
 
-        mapMaterialItemEvent.reflectMap.forEach((info, item) -> {
-            positiveBuilder.put(info, item);
-            negativeExpandBuilder.put(item, info);
-        });
+        mapMaterialItemEvent.reflectMap.forEach(builder::put);
 
-        materialItemPositiveMap = positiveBuilder.build();
-        materialItemNegativeExpandMap = negativeExpandBuilder.build();
+        materialItemMap = builder.build();
     }
 
-    public static ImmutableMap<Item, ITypedMaterialObj> getMaterialItemNegativeExpandMap() {
-        return materialItemNegativeExpandMap;
-    }
-
-    public static ImmutableMap<ITypedMaterialObj, Item> getMaterialItemPositiveMap() {
-        return materialItemPositiveMap;
+    public static BiMap<ITypedMaterialObj, Item> getMaterialItemMap() {
+        return materialItemMap;
     }
 
     @SubscribeEvent

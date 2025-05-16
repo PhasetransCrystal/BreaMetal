@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.metal.event.MapMaterialItemEvent;
 import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
+import com.phasetranscrystal.metal.helper.ImmutableBiMultiMap;
 import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
 import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
@@ -35,11 +36,12 @@ import java.util.function.Supplier;
 public class ModBusConsumer {
     //获取最后一项注册类型
     public static final Supplier<ResourceLocation> LAST_REGISTRY_TYPE = Suppliers.memoize(() -> ((LinkedHashSet<ResourceLocation>) GameData.getRegistrationOrder()).getLast());
-    //材料系统数据修饰缓存
-    public static ModifyMaterialFeatureEvent materialModifyCache;
-    public static final List<ItemStack> creativeTabAutoAttachList = new ArrayList<>();
 
-    private static BiMap<ITypedMaterialObj, Item> materialItemMap;
+    //材料系统数据修饰缓存
+    protected static ModifyMaterialFeatureEvent materialModifyCache;
+    protected static final List<ItemStack> creativeTabAutoAttachList = new ArrayList<>();
+
+    protected static ImmutableBiMultiMap<ITypedMaterialObj, Item> materialItemMap;
     protected static ImmutableSet<ResourceLocation> texturgenBlacklist = ImmutableSet.of();
 
     @SubscribeEvent
@@ -83,9 +85,7 @@ public class ModBusConsumer {
         creativeTabAutoAttachList.clear();
     }
 
-    public static void addCreativeTabStack(ItemStack stack) {
-        creativeTabAutoAttachList.add(stack);
-    }
+
 
     //---[材料物品表建设]---
 
@@ -107,7 +107,7 @@ public class ModBusConsumer {
             texturgenBlacklist = ImmutableSet.copyOf(mapMaterialItemEvent.texturegenBlacklist);
         }
 
-        ImmutableBiMap.Builder<ITypedMaterialObj, Item> builder = ImmutableBiMap.builder();
+        ImmutableBiMultiMap.Builder<ITypedMaterialObj, Item> builder = ImmutableBiMultiMap.builder();
 
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof ITypedMaterialObj obj) {
@@ -118,10 +118,6 @@ public class ModBusConsumer {
         mapMaterialItemEvent.reflectMap.forEach(builder::put);
 
         materialItemMap = builder.build();
-    }
-
-    public static BiMap<ITypedMaterialObj, Item> getMaterialItemMap() {
-        return materialItemMap;
     }
 
     @SubscribeEvent

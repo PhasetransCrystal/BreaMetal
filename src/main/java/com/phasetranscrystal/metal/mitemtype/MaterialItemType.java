@@ -51,7 +51,7 @@ public class MaterialItemType {
                 getLocation().withPrefix(material.getLocation().getNamespace() + "_" + material.getLocation().getPath() + "_"),
                 item
         );
-        ModBusConsumer.addCreativeTabStack(new ItemStack(item));
+        BreaMetal.addCreativeTabStack(new ItemStack(item));
     }
 
     //收集数据生成信息，用于自动生成模型

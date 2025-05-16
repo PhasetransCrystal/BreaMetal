@@ -2,14 +2,11 @@
 
 材料用于描述一个物品的成分基本特征。
 
-显然，一种材料需要具有在各方面的属性。这些特性通过`MaterialFeature`注册，比如`MetalMF`提供金属特性。  
-一个特征应当继承`IMaterialFeature`接口，这一接口主要要求提供一组`Holder<MaterialItemType>`即特性所包含的类型物品，一组特性依赖。
-
 让我们首先来明晰一下基本的元素：“熔点为400”的“铝合金”“块”在“氢气环境下”“熔化”，这其中的元素包含:
 
-* 材料`Material`(`M`)：“铝合金”是这种材料的名字，材料本身与其获取方式，材质效果挂钩，一种材料将具有多种特性，决定这个材料可能的用途；
+* 材料`Material`(`M`)：“铝合金”是这种材料的名字，材料本身与其获取方式，材质效果等挂钩。一种材料可以被视为多种特性的容器集合，决定这个材料可能的用途。
 * 材料特性`MaterialFeature`(`MF`)：“熔点为400”是该材料的特征之一，也可以视为对于一种材料在某方面信息存储的基本单元。
-  特性为材料在具体某方面的表现提供信息支持，换言之，材料在某种状态下的表现依赖于对应的特征；
+  特性为材料在具体某方面的表现提供信息支持，换言之，材料在某种状态下的表现依赖于对应的特征。
 * 材料物品类型`MaterialItemType`(`MIT`)：“块”是该材料当前表现出的状态。作为块，可能其不需要依赖于某种特征；
   但如果将其制作为导线，就需要依赖于电学相关的特征；制作为锯片，就需要依赖于硬度等特征。不过，对于各种形态，总有一点是要确定的：材料总量。
 * 类型化材料对象`TypedMaterialObj`：“熔点为400的铝合金块”是最终在游戏中呈现出的一个对象，尽管实际上有关熔点的内容等通常不会直接被标注在名字中。
@@ -46,16 +43,27 @@ M - MF - MIT结构的本质就是将对于原始数据的处理交给程序按�
 
 # 运行流程
 
-1. 数据收集阶段，这一阶段与mod信息收集阶段平行。在`RegisterEvent`
-   事件，优先级为High的时候，所有被添加的[`Handle$Material`](Handler$Material.java)
-   将被统一调用收集信息，同时dataGather标志将被设置为false。这意味着您可以在mod主类的构造或`RegisterEvent`
-   的Highest优先级注册新的处理器。
-2. 基本注册阶段，这一阶段将注册所有使用`DeferredRegistry`注册的材料，材料物品种类，材料特征。在这一阶段，材料与材料特征被调用时将会拉取
-   阶段1 提供的，对于本对象的额外附加内容。在这之后，这两个表将会被清空。
-3. 额外注册阶段，这一阶段与`RegisterEvent`事件，优先级为Low平行。在这一阶段中，所有上述内容已经完成注册，这时将会进行额外注册处理，为对应的材料与物品类型进行额外内容注册。
-4. 注册结束阶段，这一阶段与优先级为Low的`RegistryEvent`
-   事件平行。在这一阶段中，将会创建各种额外的映射表，比如`MF_CLASS2MFH(材料特征的class向材料特征处理器的映射表)`,`I2TMI(优先的物品获取材料信息的映射表)`,`M_MIT2I(优先的材料与物品类型获取对应物品的表)`
-   等，在阶段1收集的其它信息也将在这一阶段被统一处理。在这之后infoBuild标志将被设置为false。
+1. 数据收集与注册阶段。由于注册间信息的强依赖性，本库提供的类型注册采用短路注册，即实例在正常注册执行前已经被生成。
+   (见`com.phasetranscrystal.metal.registry.ShortCircuitRegistry`)
+   在原版内容完成注册后，会以最高优先级发布`ModifyMaterialFeatureEvent`事件。在这一事件中，您可以增添或删除指定材料具有的材料特性。
+   在这一事件之后，原版外的内容将开始注册。M, MF, MIT实例将在被引用或被注册时创建。
+2. 常规注册结束阶段。在最后一个`RegisterEvent`的最低优先级下，所有内容都已经完成注册，此时将会遍历所有材料具有的材料物品类型，并自动注册为游戏内的物品，方块等。
+   此时您就可以使用`BreaMetal.addCreativeTabStack()`方法将材料标记添加至模组默认的创造模式标签栏。
+3. FMLCommonSetup阶段。将会发布`MapMaterialItemEvent`事件，用于为未实现`ITypedMaterilObj`的游戏内对象添加材料系统的映射，用于与原版或其它模组的拓展。
+4. 世界加载阶段。自动将标记添加至创造模式标签栏的物品添加。
+
+## [Material材料](Material.java)
+
+材料是所有内容的最基本框架。创建一个材料，您需要其id(例如使用`ShortCircuitRegistry.register(String, Function<ResourceLocation,? extends I>)`)，
+标准颜色，以及材料所具有的材料特性实例组。
+
+材料实例的构造过程中将会自动拉取`ModifyMaterialFeatureEvent`所造成的更改。
+
+材料所包含的特性中，如果存在依赖不满足的项目，特性将会被剔除并在日志中以警告等级报错。
+
+材料实例构造过程中会生成不可变的特性表与可能的形态组。可能的形态组中**不包含**被`MapMaterialItemEvent`事件映射从而产生的其它类型。
+
+使用`getFeature`方法可以获取一个材料的某种特定属性。
 
 ## [TypedMaterialItem材料类型物品](TypedMaterialItem.java) 与 [ITypedMaterialObj材料类型对象接口](ITypedMaterialObj.java)
 
@@ -87,19 +95,6 @@ M - MF - MIT结构的本质就是将对于原始数据的处理交给程序按�
 对于`IMaterialFeature`提供的内容，主要是指定其对应的MaterialFeatureType，提供对应的物品类型等。需要实现的方法已经全部添加了javadoc，可以进入类下自行查看。
 
 在`Material`中加入`MaterialFeature`，加载完成后会自动创建对应的表，方便进行属性特征查找。
-
-## [Material材料](Material.java)
-
-材料上面两种设计的最终使用者。在构造时需要传入对应的`MaterialFeature`以及id。其中`MaterialFeature`会自动在`Material`
-类中创建表，可以使用需要的MFH来获取，物品所可用的物品形态类型同理。
-
-材料中存在一个可能会需要被覆写的方法`createItem`，这一方法与`MaterialItemType`
-中的功能相似。但是其可以返回null，表示回落给对应的`MaterialItemType`进行处理。
-
-对于那些在游戏中不太常用的，作为中间产物的材料，您可以将其指定为`intermediateProduct`
-，并为其选择颜色。这将直接使用纯色对材质基础进行叠加，并允许相同颜色的材质共用以降低占用。因此，请尽量使用少的颜色种类。
-
-参考：银色使用`0xEBEEF0FF`。
 
 ## [Handler$Material材料额外处理器](Handler$Material.java)
 

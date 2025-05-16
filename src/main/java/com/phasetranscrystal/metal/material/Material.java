@@ -2,6 +2,7 @@ package com.phasetranscrystal.metal.material;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.phasetranscrystal.metal.BreaMetal;
 import com.phasetranscrystal.metal.ModBusConsumer;
 import com.phasetranscrystal.metal.NewRegistries;
 import com.phasetranscrystal.metal.mfeature.IMaterialFeature;
@@ -38,13 +39,21 @@ public class Material {
         //材料标准颜色
         this.x16color = x16color;
 
+        if (BreaMetal.getMaterialModifyCache() == null) {
+            LOGGER.error("A material has been loaded too early! Make sure the instance be created after all vanilla objects registered.");
+            LOGGER.error("Material id: {}. See com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent for more information.", materialId);
+            LOGGER.error("一个材料实例被过早加载了！请保证材料实例在原版内容注册完成后再被加载。");
+            LOGGER.error("材料id: {}. 请查询 com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent 获取更多信息。", materialId);
+            throw new IllegalStateException("Material modifier has not been initialized. Make sure to generate your material instance after all vanilla objects have been registered.");
+        }
+
         //材料特性收集
         HashMap<MaterialFeatureType<?>, IMaterialFeature<?>> features = new HashMap<>();
         for (IMaterialFeature<?> feature : fIns) {
             features.put(feature.getType(), feature);
         }
-        ModBusConsumer.materialModifyCache.featureAttach.get(materialId).forEach(feature -> features.put(feature.getType(), feature));
-        ModBusConsumer.materialModifyCache.featureRemove.get(materialId).forEach(features::remove);
+        BreaMetal.getMaterialModifyCache().featureAttach.get(materialId).forEach(feature -> features.put(feature.getType(), feature));
+        BreaMetal.getMaterialModifyCache().featureRemove.get(materialId).forEach(features::remove);
 
         //材料依赖判定
         List<MaterialFeatureType<?>> typeExceptions = new ArrayList<>();

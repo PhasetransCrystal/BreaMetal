@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * MaterialFeatureType材料特征类型<br><p>
- * 材料特征类型是对{@link IMaterialFeature 材料特征(MaterialFeature)}的类型的包装。<br>
- * 这一包装在注册中被使用，同时也用于快速的将特征类型与特征实例进行相互对应。
+ * 材料特征类型是对{@link IMaterialFeature 材料特征(MaterialFeature)}的类型的指定。<br>
+ * 这一指定在短路注册中被使用，用于处理与其它特征的依赖以及为材料生成物品类型列表。
  *
  * @see IMaterialFeature 继续浏览。查看MaterialFeature的详细信息
  */

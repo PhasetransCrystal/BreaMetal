@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 public final class ImmutableBiMultiMap<K, V> {
     private final ImmutableMultimap<K, V> forwardMap;
@@ -65,8 +66,7 @@ public final class ImmutableBiMultiMap<K, V> {
         }
 
         public Builder<K, V> put(K key, V value, boolean mainResult) {
-            Objects.requireNonNull(key);
-            Objects.requireNonNull(value);
+            if (key == null || value == null) return this;
 
             if (reverseMap.containsKey(value)) return this;
 
@@ -86,11 +86,36 @@ public final class ImmutableBiMultiMap<K, V> {
         }
 
         public Builder<K, V> setMainResult(K key, V value) {
-            Objects.requireNonNull(key);
-            Objects.requireNonNull(value);
+            if (key == null || value == null) return this;
             if (reverseMap.containsKey(value)) {
                 mainResultMap.put(key, value);
             }
+            return this;
+        }
+
+        public boolean contains(V value) {
+            return reverseMap.containsKey(value);
+        }
+
+        public boolean isEmpty() {
+            return forwardMap.isEmpty();
+        }
+
+        public Builder<K, V> clear() {
+            forwardMap.clear();
+            reverseMap.clear();
+            mainResultMap.clear();
+            return this;
+        }
+
+        public Builder<K, V> foreach(BiConsumer<K, V> consumer) {
+            forwardMap.forEach(consumer);
+            return this;
+        }
+
+        public Builder<K, V> merge(Builder<K, V> value) {
+            if (value == null || value.isEmpty() || value == this) return this;
+            value.foreach(this::put);
             return this;
         }
 

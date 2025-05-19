@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableSet;
 import com.phasetranscrystal.metal.event.MapMaterialItemEvent;
 import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
+import com.phasetranscrystal.metal.event.TextureGenBlackListEvent;
 import com.phasetranscrystal.metal.helper.ImmutableBiMultiMap;
 import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
@@ -86,7 +87,6 @@ public class ModBusConsumer {
     }
 
 
-
     //---[材料物品表建设]---
 
     @SubscribeEvent
@@ -97,15 +97,12 @@ public class ModBusConsumer {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void buildItemReflectDatagen(GatherDataEvent event) {
         generateMaterialItemMap();
+        texturgenBlacklist = ImmutableSet.copyOf(ModLoader.postEventWithReturn(new TextureGenBlackListEvent()).texturegenBlacklist);
     }
 
     private static void generateMaterialItemMap() {
         MapMaterialItemEvent mapMaterialItemEvent = new MapMaterialItemEvent();
         ModLoader.postEvent(mapMaterialItemEvent);
-
-        if(DatagenModLoader.isRunningDataGen()){
-            texturgenBlacklist = ImmutableSet.copyOf(mapMaterialItemEvent.texturegenBlacklist);
-        }
 
         ImmutableBiMultiMap.Builder<ITypedMaterialObj, Item> builder = ImmutableBiMultiMap.builder();
 
@@ -115,7 +112,7 @@ public class ModBusConsumer {
             }
         }
 
-        mapMaterialItemEvent.reflectMap.forEach(builder::put);
+        builder.merge(mapMaterialItemEvent.getReflectMap());
 
         materialItemMap = builder.build();
     }

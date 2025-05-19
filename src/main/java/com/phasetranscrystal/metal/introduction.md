@@ -59,8 +59,8 @@ M - MF - MIT结构的本质就是将对于原始数据的处理交给程序按�
 
 ## [材料Material](Material.java)
 
-材料是所有内容的最基本框架。创建一个材料，您需要其id(例如使用`ShortCircuitRegistry.register(String, Function<ResourceLocation,? extends I>)`)，
-标准颜色，以及材料所具有的材料特性实例组。
+材料是所有内容的最基本框架。创建一个材料，您需要其id(
+例如使用`ShortCircuitRegistry.register(String, Function<ResourceLocation,? extends I>)`)，标准颜色，以及材料所具有的材料特性实例组。
 
 材料实例的构造过程中将会自动拉取`ModifyMaterialFeatureEvent`所造成的更改。
 
@@ -70,7 +70,7 @@ M - MF - MIT结构的本质就是将对于原始数据的处理交给程序按�
 
 使用`getFeature`方法可以获取一个材料的某种特定属性。
 
-## [IMaterialFeature材料特征](mfeature/IMaterialFeature.java) 与 [MaterialFeatureType材料特征类型](mfeature/MaterialFeatureType.java)
+## [材料特征IMaterialFeature](mfeature/IMaterialFeature.java) 与 [MaterialFeatureType材料特征类型](mfeature/MaterialFeatureType.java)
 
 `MaterialFeatureType`用于标记一种材料特征的类别，包括其类(class)与编解码器(codec)，这用于与类的对应；
 
@@ -79,35 +79,56 @@ M - MF - MIT结构的本质就是将对于原始数据的处理交给程序按�
 `IMaterialFeature`则是存储与提供数据的主要部分。接口中只需要提供对应的类型。使用方法则是在材料实例的构造传参或属性修饰事件中创建实例即可，
 材料加载完成后将会自动生成`MaterialFeatureType` -> `IMaterialFeature`查询表。
 
-## [TypedMaterialItem材料类型物品](TypedMaterialItem.java) 与 [ITypedMaterialObj材料类型对象接口](ITypedMaterialObj.java)
+## [材料物品类型MaterialItemType](mitemtype/MaterialItemType.java)
 
-材料类型物品是一个独立的物品，其内部包含的nbt数据将使其在不同材料条件下变成不同的样式。也就是说，所有这个形态的材料物品都是同一个物品。   
-因此请不要直接通过物品判断来决定它是否为你需要的物品。这有可能导致错误，比如说，你需要下届合金齿轮，但匹配到一个地狱岩齿轮。
+`MaterialItemType`是材料表现为的某种形态。
 
-`TypedMaterialItem`在`Item`的基础上，主要提供了两个信息：
+其构造参数中的`content`是材料含量，也就是熔融后的标准含量，以 16mB/金属粒 144mB/宝石 1B/桶 计量。
 
-* 一个实例常量，存储`MaterialItemType`。
-* 一个`Material`的nbt数据，存储物品的材料。
+`purity`为纯度。在设计中，材料直接提取的量为材料含量×纯度，可能会在类似矿处等地方用到。但目前并未有实际使用，因此没有泛用规则。
+1表示该物品纯度为100%。
 
-一个`TypedMaterialItem`应当实现`ITypedMaterialObj`接口。这一接口需要实现两个方法，分别是提供`MaterialItemType`
-与`Material`。  
-如果您不想为某个物品提供`MaterialItemType`但是想继续使用材料系统，您可以将前者提供一个Unexplained，并覆写`getContext`
-方法来指定其物质含量。
+材料物品类型中存在一个`createItem`方法，对应材料将通过该方法进行注册。这一过程发生在正常注册全部完成后但注册表未冻结时。
+这并不局限于物品，您可以注册需要的各种对象，例如方块等。
 
-## [MaterialItemType材料物品类型](MaterialItemType.java)
+`gatherKeyForDatagen`只会在数据生成时用到，用于为对应材料生成材质，模型等。这一过程不会在生产环境中被触发。
 
-每种`MaterialItemType`将默认创建一个对应的`Item`。
+## [材料类型对象ITypedMaterialObj](mitemtype/ITypedMaterialObj.java)
 
-材料物品类型中存在一个`createItem`方法，这个方法没有添加final修饰，意味着您可以覆写该内容。  
-在通过Material与MaterialItemType创建物品时，程序将会先在Material中请求创建物品，若返回值为null，将会继续在MaterialItemType中请求，这时将不能返回null。  
-这一设计用于处理一些诸如块之类的特殊物品。
+材料类型对象接口标记一个类，用于提供此类的材料特性。
 
+这包括这一对象的材料类型与物品类型。
 
-## [Handler$Material材料额外处理器](Handler$Material.java)
+`TypedMaterialItem`是实现了`ITypedMaterialObj`的`Item`子类。您可以用这个类创建您的材料物品。
 
-材料额外处理器提供了一些特殊功能，如为其它mod的`MaterialFeature`添加`MaterialItemType`，为`Material`添加`MaterialFeature`
-，以及为物品标记材料信息和添加材料信息到物品的获取。
+方块部分正在施工。
 
-这些内容的应当在mod主类构建时调用[材料系统总控](System$Material.java)
-的`addMaterialExtraHandle(Consumer<Handler$Material> consumer)`方法实现。这些内容将会在优先级为high的`RegisterEvent`
-时被调用，也就是绝大部分游戏内容注册之前。
+对于一些已有的物品或其它无法修改其源类代码的物品，可以通过`MapMaterialItemEvent`事件为其添加映射。
+
+# [短路注册ShortCircuitRegistry](registry/ShortCircuitRegistry.java)
+
+对于注册，正如之前提及的，灵活的类间信息依赖使正常的延迟注册难以使用；
+考虑到这部分内容与其它注册间没有重大依赖关系风险，且修改原有注册逻辑并不方便，因此我们使用短路注册。
+
+短路注册有关的类可以在`com.phasetranscrystal.metal.registry`下找到。
+
+其使用方法与正常延迟注册相似。唯一的区别是，其为实例添加了一层额外的`Suppilers.memorize`包装并在holder中引用，
+因此您可以在任何时候访问其结果实例而无需等待注册结束。
+
+对于短路注册对象的查表，可以使用[`ShortCircuitRegMap`](registry/ShortCircuitRegMap.java)下的方法通过id查询，
+其会记录所有短路注册系统中创建的注册对象实例与其id，并统一缓存。
+
+这些缓存会在游戏加载完成后被清空。
+
+# 数据生成引导
+
+`MaterialItemType.gatherKeyForDatagen(...)`方法会在进行数据生成时为每个材料的每种物品类型进行一次调用。
+您可以在此处添加您的数据生成相关内容。
+
+我们为材质生成添加了两种生成器，分别是透明度过滤和正片叠底。您可以查看[`TextureMixProvider`](datagen/TextureMixProvider.java)
+的子类来找到他们以及实现原理。
+
+使用`CompoundClientDatagen.getAlphaFilterProvider()`方法来快速获取透明度过滤生成器。
+
+如果您不想生成某个材料的某种物品的材质，可以使用[`TextureGenBlackListEvent`](event/TextureGenBlackListEvent.java)事件来阻止材质生成。
+这部分内容可能会被重构以适应更复杂的数据生成条件。

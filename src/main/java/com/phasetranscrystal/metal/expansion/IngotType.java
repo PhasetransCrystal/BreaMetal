@@ -20,8 +20,8 @@ public class IngotType extends MaterialItemType {
     @VisibleForTesting
     @Override
     public void registryBootstrap(Material material) {
-        if (!material.equals(BreaMetalRegistries.IRON.get())) {
+        //if (!material.equals(BreaMetalRegistries.IRON.get())) {
             super.registryBootstrap(material);
-        }
+        //}
     }
 }

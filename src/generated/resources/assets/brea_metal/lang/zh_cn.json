@@ -2,5 +2,13 @@
   "BREA_METAL:IRON BREA_METAL:COMBUSTIBLE": "铁 可燃物",
   "BREA_METAL:IRON BREA_METAL:INGOT": "铁 锭",
   "BREA_METAL:LIGNITE BREA_METAL:COMBUSTIBLE": "褐煤 可燃物",
-  "BREA_METAL:LIGNITE BREA_METAL:INGOT": "褐煤 锭"
+  "BREA_METAL:LIGNITE BREA_METAL:INGOT": "褐煤 锭",
+
+  "brea.metal.mit.ingot" : "1",
+  "brea.metal.material.ingot" : "2",
+  "brea.metal.iron.ingot" : "3",
+  "item.brea.metal.mit.ingot" : "4",
+  "item.brea.metal.material.ingot" : "5",
+  "item.brea_metal.iron_ingot" : "6",
+  "item.brea_metal.unknown_ingot" : "6"
 }

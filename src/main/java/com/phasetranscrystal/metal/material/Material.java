@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
 public class Material {
     public static final Logger LOGGER = LogManager.getLogger("BreaMetal:Material");
     public final int x16color;
-
+    public final ResourceLocation id;
     public final ImmutableMap<MaterialFeatureType<? extends IMaterialFeature<?>>, IMaterialFeature<?>> toFeature;//由特征类型向特征实例的映射表
     public final ImmutableSet<MaterialItemType> toTypes;//材料具有的所有物品类型
 
     public Material(ResourceLocation materialId, int x16color, IMaterialFeature<?>... fIns) {
         //材料标准颜色
         this.x16color = x16color;
-
+        this.id = materialId;
         if (BreaMetal.getMaterialModifyCache() == null) {
             LOGGER.error("A material has been loaded too early! Make sure the instance be created after all vanilla objects registered.");
             LOGGER.error("Material id: {}. See com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent for more information.", materialId);
@@ -136,5 +136,4 @@ public class Material {
     public String toString() {
         return "BreaMetal-Material(" + getResourceKey() + ")";
     }
-
 }

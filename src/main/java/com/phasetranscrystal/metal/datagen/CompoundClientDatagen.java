@@ -74,4 +74,14 @@ public class CompoundClientDatagen {
         this.highPriorityFilter.add(TEXTUREGEN_PREDICATE);
         return getDataProvider(TextureMultiplyMixProvider.class, v -> new TextureMultiplyMixProvider(event));
     }
+
+    public MaterialLanguageProviderZH getLanguageProviderZH(String locale) {
+        return getDataProvider(MaterialLanguageProviderZH.class,
+                v -> new MaterialLanguageProviderZH(event.getGenerator().getPackOutput(), modid, locale));
+    }
+    public MaterialLanguageProviderZH getLanguageProviderEN(String locale) {
+        return getDataProvider(MaterialLanguageProviderZH.class,
+                v -> new MaterialLanguageProviderZH(event.getGenerator().getPackOutput(), modid, locale));
+
+    }
 }

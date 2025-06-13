@@ -1,6 +1,7 @@
 package com.phasetranscrystal.metal;
 
 import com.phasetranscrystal.metal.datagen.CompoundClientDatagen;
+import com.phasetranscrystal.metal.datagen.MaterialLanguageList;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -15,6 +16,12 @@ public class DatagenRegistries {
     }
 
     public static void generateForMod(GatherDataEvent event, String modid){
-        new CompoundClientDatagen(event, modid).build();
+        CompoundClientDatagen dataGen = new CompoundClientDatagen(event, modid);
+        MaterialLanguageList.TranGen();
+        if (event.includeClient()) {
+            dataGen.getLanguageProviderZH("zh_cn");
+            dataGen.getLanguageProviderEN("en_us");
+        }
+        dataGen.build();
     }
 }

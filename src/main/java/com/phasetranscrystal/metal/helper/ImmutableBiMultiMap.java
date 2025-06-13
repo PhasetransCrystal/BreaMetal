@@ -1,14 +1,11 @@
 package com.phasetranscrystal.metal.helper;
 
 import com.google.common.collect.*;
-import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
-import net.minecraft.world.item.Item;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public final class ImmutableBiMultiMap<K, V> {
     private final ImmutableMultimap<K, V> forwardMap;
@@ -45,6 +42,9 @@ public final class ImmutableBiMultiMap<K, V> {
         return mainResultMap.containsKey(key) ? mainResultMap.get(key) : forwardMap.get(key).stream().findAny().orElse(null);
     }
 
+    public void foreach(BiConsumer<? super K, ? super V> action) {
+        forwardMap.forEach(action);
+    }
 
     public boolean isEmpty() {
         return forwardMap.isEmpty();
@@ -97,6 +97,10 @@ public final class ImmutableBiMultiMap<K, V> {
             return reverseMap.containsKey(value);
         }
 
+        public boolean containsKey(K key) {
+            return forwardMap.containsKey(key);
+        }
+
         public boolean isEmpty() {
             return forwardMap.isEmpty();
         }
@@ -113,9 +117,31 @@ public final class ImmutableBiMultiMap<K, V> {
             return this;
         }
 
+        public <T> Builder<K, V> merge(Builder<K, T> value, Function<T,V> keyMapper) {
+            if (value == null || value.isEmpty() || value == this) return this;
+            value.foreach((k,t) -> put(k, keyMapper.apply(t)));
+            value.mainResultMap.forEach((k,t) -> put(k, keyMapper.apply(t)));
+            return this;
+        }
+
         public Builder<K, V> merge(Builder<K, V> value) {
             if (value == null || value.isEmpty() || value == this) return this;
             value.foreach(this::put);
+            mainResultMap.putAll(value.mainResultMap);
+            return this;
+        }
+
+        public <T> Builder<K, V> merge(ImmutableBiMultiMap<K, T> value, Function<T,V> keyMapper) {
+            if (value == null || value.isEmpty()) return this;
+            value.foreach(((k, t) -> put(k, keyMapper.apply(t))));
+            value.mainResultMap.forEach((k,t) -> put(k, keyMapper.apply(t)));
+            return this;
+        }
+
+        public Builder<K, V> merge(ImmutableBiMultiMap<K, V> value) {
+            if (value == null || value.isEmpty()) return this;
+            value.foreach(this::put);
+            mainResultMap.putAll(value.mainResultMap);
             return this;
         }
 

@@ -16,6 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -41,6 +42,8 @@ public class ModBusConsumer {
     //材料系统数据修饰缓存
     protected static ModifyMaterialFeatureEvent materialModifyCache;
     protected static final List<ItemStack> creativeTabAutoAttachList = new ArrayList<>();
+
+    protected static ImmutableBiMultiMap<ITypedMaterialObj, ItemLike> materialItemPreMap;
 
     protected static ImmutableBiMultiMap<ITypedMaterialObj, Item> materialItemMap;
     protected static ImmutableSet<ResourceLocation> texturgenBlacklist = ImmutableSet.of();
@@ -68,6 +71,10 @@ public class ModBusConsumer {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void materialItemAutoRegistry(RegisterEvent event) {
         if (event.getRegistryKey().location().equals(LAST_REGISTRY_TYPE.get())) {
+            MapMaterialItemEvent.Pre pre = new MapMaterialItemEvent.Pre();
+            ModLoader.postEvent(pre);
+            materialItemPreMap = pre.reflectMap.build();
+
             for (Material material : NewRegistries.MATERIAL) {
                 for (MaterialItemType type : material.toTypes) {
                     type.registryBootstrap(material);
@@ -101,7 +108,7 @@ public class ModBusConsumer {
     }
 
     private static void generateMaterialItemMap() {
-        MapMaterialItemEvent mapMaterialItemEvent = new MapMaterialItemEvent();
+        MapMaterialItemEvent.Post mapMaterialItemEvent = new MapMaterialItemEvent.Post();
         ModLoader.postEvent(mapMaterialItemEvent);
 
         ImmutableBiMultiMap.Builder<ITypedMaterialObj, Item> builder = ImmutableBiMultiMap.builder();
@@ -112,13 +119,17 @@ public class ModBusConsumer {
             }
         }
 
-        builder.merge(mapMaterialItemEvent.getReflectMap());
+        builder.merge(materialItemPreMap,ItemLike::asItem);
+
+        materialItemPreMap = null;
+
+        builder.merge(mapMaterialItemEvent.getReflectMap(),ItemLike::asItem);
 
         materialItemMap = builder.build();
     }
 
     @SubscribeEvent
-    public static void attachMaterialData(MapMaterialItemEvent event) {
+    public static void attachMaterialData(MapMaterialItemEvent.Post event) {
         event.addReflectMap(BreaMetalRegistries.UNKNOWN.get(), BreaMetalRegistries.INGOT.get(), BreaMetalRegistries.UNKNOWN_INGOT.get());
     }
 }

@@ -46,6 +46,8 @@ public class MaterialItemType {
      */
     public void registryBootstrap(Material material) {
         Registry<Item> registry = BuiltInRegistries.REGISTRY.get((ResourceKey) net.minecraft.core.registries.Registries.ITEM);
+        if(isRegistryPrevented(material)) return;
+
         Item item = new TypedMaterialItem(this, material);
         Registry.register(registry,
                 getLocation().withPrefix(material.getLocation().getNamespace() + "_" + material.getLocation().getPath() + "_"),
@@ -68,6 +70,10 @@ public class MaterialItemType {
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", texturePath));
 
+    }
+
+    public boolean isRegistryPrevented(Material material) {
+        return BreaMetal.isMaterialItemRemap(material, this);
     }
 
     public String defaultTextureKey(Material material, ResourceLocation itemLocation) {

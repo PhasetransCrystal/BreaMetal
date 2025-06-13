@@ -4,8 +4,11 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.phasetranscrystal.metal.event.ModifyMaterialFeatureEvent;
 import com.phasetranscrystal.metal.helper.ImmutableBiMultiMap;
+import com.phasetranscrystal.metal.material.Material;
 import com.phasetranscrystal.metal.mitemtype.ITypedMaterialObj;
 
+import com.phasetranscrystal.metal.mitemtype.MaterialItemType;
+import com.phasetranscrystal.metal.mitemtype.TypedMaterialInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -55,5 +58,13 @@ public class BreaMetal {
 
     public static ImmutableBiMultiMap<ITypedMaterialObj, Item> getMaterialItemMap() {
         return ModBusConsumer.materialItemMap;
+    }
+
+    public static boolean isMaterialItemRemap(ITypedMaterialObj obj){
+        return ModBusConsumer.materialItemPreMap.containsKey(obj);
+    }
+
+    public static boolean isMaterialItemRemap(Material material, MaterialItemType type){
+        return isMaterialItemRemap(new TypedMaterialInfo(material,type));
     }
 }
